@@ -1,0 +1,3476 @@
+/**
+    GLOBAL VARIABLES
+*/
+@navbarWidth : 100px;
+@topbarHeight : 90px;
+@objectColor : #2B3044;
+@backgroundColor : #1c1f2c;
+@backColor : #0c0d13;
+@greenColor : rgba(12, 151, 19, 0.767);
+@redColor : rgba(177, 10, 10, 0.808);
+@yellowColor : rgb(177, 147, 12);
+@blueColor : rgb(50, 126, 197);
+@redTextColor : rgb(255, 77, 77);
+@yellowTextColor : rgb(255, 255, 81);
+@greenTextColor : rgb(82, 255, 82);
+
+
+/*
+    FONT-FAMILY
+*/
+
+@font-face {
+    font-family: 'Metropolis';
+    src: url('../fonts/Metropolis-ExtraLight.otf') format('truetype')
+}
+
+/*
+    ANIMATIONS
+*/
+
+@keyframes appear {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/**
+    Default CSS
+**/
+
+/* COLORS */
+.grey {
+    background-color: @objectColor;
+}
+
+.red {
+    background-color: @redColor;
+}
+
+.redText {
+    color: @redColor  !important;
+}
+
+.green {
+    background-color: @greenColor;
+}
+
+.greenText {
+    color: @greenColor  !important;
+}
+
+.blue {
+    background-color: @blueColor;
+}
+
+.yellow {
+    background-color: @yellowColor;
+}
+
+.yellowText {
+    color: @yellowColor  !important;
+}
+
+
+a {
+    text-decoration: none;
+    color: white;
+
+    &:hover {
+        color: antiquewhite;
+    }
+}
+
+.fas:hover {
+    cursor: pointer;
+}
+
+.tippy-tooltip {
+    font-size: 10px;
+    background-color: @objectColor;
+    border: 1px solid @backgroundColor;
+}
+
+.activity-oneClick .fas {
+    cursor: default;
+    font-size: 12px;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+#toast {
+    font-size: 15px;
+    font-weight: 400;
+    width: 300px;
+    background-color: @backColor;
+    color: white;
+    text-align: center;
+    border-radius: 3px;
+    padding: 10px;
+    position: fixed;
+    top: 50px;
+    right: 10px;
+    overflow: hidden;
+    z-index: 1051;
+    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
+}
+
+/*
+   GLOBAL CSS ELEMENT
+*/
+
+button,
+input {
+    outline: none;
+}
+
+button,
+.content {
+    transition-duration: 1s;
+}
+
+td {
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.global-button {
+    transition-duration: 1s;
+    padding-top: 3.5px;
+    padding-bottom: 3.5px;
+    padding-right: 13px;
+    padding-left: 13px;
+    margin-right: 10px;
+    height: auto;
+    font-size: 9.6px;
+    font-family: 'Metropolis';
+    border-radius: 7px;
+    border: none;
+    color: white;
+    font-size: 10px;
+
+    &:hover {
+        box-shadow: 0px 0px 10px rgb(0, 0, 0);
+    }
+}
+
+.global-input {
+    border: none;
+    background-color: @objectColor;
+    color: white;
+    font-size: 12px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.global-input-2 {
+    border: none;
+    background-color: @backgroundColor;
+    color: white;
+    font-size: 12px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.autofill-input {
+    border: none;
+    border-bottom: 1px solid rgba(131, 131, 131, 0.836);
+    background-color: rgba(255, 0, 212, 0);
+    color: rgb(190, 190, 190);
+    font-size: 60%;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none
+}
+
+.global-textarea {
+    border: none;
+    background-color: @objectColor;
+    color: white;
+    font-size: 70%;
+    border-radius: 5px;
+}
+
+.required-star {
+    color : red !important;
+    padding: 2px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 35px;
+    height: 14px;
+    margin-bottom: 0;
+
+
+    input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked+.slider {
+            background-color: @blueColor;
+        }
+
+        &:focus+.slider {
+            box-shadow: 0 0 1px white;
+        }
+
+        &:checked+.slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(18px);
+        }
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgb(128, 128, 128);
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 0px;
+            bottom: -2px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+    }
+}
+
+.popover-content {
+    background-color: grey;
+}
+
+.custom-scrollbar {
+    &::-webkit-scrollbar {
+        transition-duration: 0.3s;
+        width: 7px;
+        height: 11px;
+    }
+
+    &::-webkit-scrollbar-button {
+        width: 7px;
+        height: 7px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: @blueColor;
+        border: 0px none #ffffff;
+        border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+        background: @blueColor;
+    }
+
+    &::-webkit-scrollbar-thumb:active {
+        background: @blueColor;
+    }
+
+    &::-webkit-scrollbar-track {
+        transition-duration: 0.3s;
+        border-radius: 50px;
+    }
+
+    &::-webkit-scrollbar-track:active {
+        background: @backgroundColor;
+    }
+
+    &::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+}
+
+/**
+    CSS CONTENT
+**/
+body {
+    -webkit-user-select: none;
+    /* Safari */
+    user-select: none;
+    overflow: hidden;
+    background: @backgroundColor center center fixed;
+    color: white;
+    font-family: 'Metropolis';
+
+
+    /* Root element for page and tools integration*/
+    #root {
+        display: flex;
+
+        #dragbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            -webkit-app-region: drag;
+        }
+
+        .navbar {
+            height: 100vh;
+            width: @navbarWidth;
+            background-color: @objectColor;
+
+            .close,
+            .minimize,
+            .maximize,
+            .tool,
+            .logout {
+                -webkit-app-region: no-drag;
+            }
+
+            .action-btn {
+                display: flex;
+                margin: 0 !important;
+                padding-top: 2%;
+                width: 100%;
+                height: 10%;
+                position: absolute;
+                top: 10px;
+                left: 0;
+                justify-content: center;
+
+                .btn-window {
+                    margin-left: 8px;
+                    margin-right: 8px;
+
+                    .circle {
+                        transition-duration: 0.2s;
+                        position: relative;
+                        border-radius: 50%;
+                        width: 12px;
+                        height: 12px;
+
+                        &:hover {
+                            transition-duration: 0.2s;
+                            box-shadow: 0px 0px 12px rgb(255, 255, 255);
+                        }
+                    }
+
+                    .close {
+                        background-color: @redColor;
+                        margin: auto;
+                    }
+
+                    .minimize {
+                        background-color: @yellowColor;
+                        margin: auto;
+                    }
+
+                    .maximize {
+                        background-color: @greenColor;
+                        margin: auto;
+                    }
+                }
+
+            }
+
+            .tools-list {
+                justify-content: center;
+                width: 100%;
+                margin-top: 10%;
+
+
+                .active {
+                    background-color: @blueColor
+                }
+
+                .tool {
+                    position: relative;
+                    margin-right: auto;
+                    margin-left: auto;
+                    width: 40px;
+                    height: 40px;
+                    text-align: center;
+                    justify-content: center;
+                    margin-top: 20px;
+                    transition-duration: 0.3s;
+                    border-radius: 10px;
+
+                    i {
+                        font-size: 20px;
+                        position: absolute;
+                        top: 50%;
+                        left: 50%;
+                        transform: translateX(-50%) translateY(-50%);
+                    }
+
+                    &:hover {
+                        transition-duration: 0.5s;
+                        background-color: @blueColor;
+                        transform: scale(1.02);
+                        cursor: pointer;
+                    }
+                }
+            }
+
+            .logout {
+                position: relative;
+                text-align: center;
+                width: 40px;
+                height: 40px;
+                padding-top: 5px;
+                padding-bottom: 8px;
+                margin-top: 20px;
+                margin-bottom: 20px;
+                margin-right: 10px;
+                margin-left: 10px;
+                border-radius: 10px;
+                transition-duration: 0.5s;
+
+                i {
+                    font-size: 20px;
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(-50%);
+                }
+
+                &:hover {
+                    transform: scale(1.02);
+                    transition-duration: 0.5s;
+                    background-color: @blueColor;
+                    cursor: pointer;
+                }
+            }
+
+            .app-clock-display {
+                width: 100%;
+                text-align: center;
+
+                #app-clock {
+                    font-size: 90%;
+                    width: 100%;
+                }
+            }
+
+            .app-version-display {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                text-align: center;
+
+                #app-version {
+                    font-size: 70%;
+                }
+            }
+        }
+
+        .tools-category {
+            width: 100%;
+            height: 100vh;
+
+            .top {
+                margin-top: 15px;
+                display: flex;
+                text-align: center;
+                height: @topbarHeight;
+
+                .logo {
+                    position: absolute;
+                    left: 50%;
+                    transform: translateX(-50%);
+
+                    img {
+                        width: 50px;
+                    }
+                }
+
+                .left-infos {
+                    width: 250px;
+                    position: absolute;
+                    right: 5%;
+                    top: 3.5%;
+                    display: flex;
+                    -webkit-app-region: no-drag;
+
+                    .user-infos {
+                        height: 50px;
+                        background-color: @objectColor;
+                        text-align: left;
+                        border-radius: 10px;
+
+                        .infos {
+                            transform: translateY(30%);
+                            vertical-align: middle;
+                            padding-left: 20px;
+                            padding-right: 20px;
+                            display: flex;
+
+                            .avatar {
+                                img {
+                                    border-radius: 10px;
+                                    height: 30px;
+                                }
+                            }
+
+                            .user {
+                                margin-left: 10px;
+
+                                p {
+                                    margin: 0;
+                                }
+
+                                .user-name {
+                                    font-size: 75%;
+                                }
+
+                                .small {
+                                    font-size: 55%;
+                                    font-weight: bold;
+                                    font-family: 'Metropolis';
+                                }
+                            }
+                        }
+                    }
+
+                    .notifications {
+                        position: relative;
+                        transition-duration: 0.4s;
+                        background-color: @objectColor;
+                        border-radius: 10px;
+                        width: 50px;
+                        height: 50px;
+                        margin-left: 10%;
+
+                        img {
+                            height: 20px;
+                            transform: translateY(55%);
+
+                            &:hover {
+                                cursor: pointer;
+                            }
+                        }
+
+                        &:hover::after {
+                            width: 19px;
+                            height: 19px;
+                            font-size: 70%;
+                            transition-duration: 0.2s;
+                        }
+
+                        &::after {
+                            position: absolute;
+                            top: -3px;
+                            right: -3px;
+                            transition-duration: 0.2s;
+                            font-size: 60%;
+                            padding: 2px;
+                            content: attr(data-content);
+                            text-align: center;
+                            vertical-align: center;
+                            width: 17px;
+                            height: 17px;
+                            background-color: @redColor;
+                            border-radius: 50%;
+                        }
+
+                        .notifications-center {
+                            display: none;
+                            position: relative;
+
+                            .noti-title {
+                                transition-duration: 0.5s;
+                                opacity: 0;
+                                margin-top: 20px;
+                                font-size: 0.2rem
+                            }
+
+                            .close-frame {
+                                font-size: 0.8rem;
+                                opacity: 0;
+                                padding: 5px;
+                                transition-duration: 0.5s;
+                                position: absolute;
+                                top: 15px;
+                                right: -120px;
+                                border-radius: 10px;
+
+                                &:hover {
+                                    cursor: pointer;
+                                    background-color: @blueColor;
+                                }
+                            }
+
+                            .body {
+                                height: 70%;
+                                overflow-y: overlay;
+
+                                .notification {
+                                    position: relative;
+                                    margin-left: 5%;
+                                    text-align: center;
+                                    margin-top: 10px;
+                                    border-radius: 10px;
+                                    background-color: @backgroundColor;
+                                    opacity: 0;
+                                    padding-top: 10px;
+                                    padding-bottom: 10px;
+                                    width: 90%;
+                                    max-width: 100%;
+                                    text-align: center;
+                                    font-size: 0rem;
+
+                                    .title {
+                                        font-size: 90%;
+                                    }
+
+                                    .delete-notif {
+                                        text-align: center;
+                                        vertical-align: middle;
+                                        transition-duration: 0.5s;
+                                        padding: 3px 5px 3px 5px;
+                                        font-size: 80%;
+                                        position: absolute;
+                                        top: 8px;
+                                        right: 8px;
+                                        border-radius: 10px;
+
+                                        &:hover {
+                                            transition-duration: 0.5s;
+                                            background-color: @blueColor;
+                                        }
+                                    }
+
+                                    .content {
+                                        margin-top: 5px;
+                                        font-size: 80%;
+                                        position: relative;
+                                        display: flex;
+
+                                        .circle {
+                                            height: 10px;
+
+                                            width: 10px;
+                                            border-radius: 50%;
+                                            margin-left: 10px;
+                                            margin-right: 10px;
+                                        }
+
+                                        .desc {
+                                            width: 70%;
+                                        }
+
+                                        .date {
+                                            font-size: 75%;
+                                            margin-top: 20px;
+                                            width: 15%;
+                                        }
+
+                                        .c-red {
+                                            background-color: @redColor;
+                                        }
+
+                                        .c-blue {
+                                            background-color: @blueColor;
+                                        }
+
+                                        .c-green {
+                                            background-color: @greenColor;
+                                        }
+
+                                        .c-yellow {
+                                            background-color: @yellowColor;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .footer {
+                                transition-duration: 0.8s;
+                                margin-top: 10px;
+                                width: 100%;
+                                text-align: center;
+
+                                button {
+                                    opacity: 0;
+                                    background-color: @redColor;
+                                }
+                            }
+                        }
+                    }
+
+                    .notifications-active {
+                        border: 2px solid rgb(62, 68, 75);
+                        transition-duration: 0.7s;
+                        margin-left: 0;
+                        position: absolute;
+                        right: 0;
+                        width: 300px;
+                        height: 350px;
+                        z-index: 2;
+
+                        img {
+                            display: none;
+                        }
+
+                        &::before {
+                            display: none;
+                        }
+
+                        .notifications-center {
+                            display: inline;
+
+                        }
+                    }
+                }
+
+            }
+
+            .tools {
+
+                .tool-element {
+                    margin-left: 8%;
+
+                    .title {
+                        width: auto;
+                        font-family: 'Metropolis';
+                        font-weight: 500;
+                        font-size: 150%;
+                    }
+                }
+
+                .proxies,
+                .spoof-browser,
+                .profile-converter,
+                .profile-manager,
+                .activity-generator,
+                .account-generator,
+                .supreme-signup,
+                .discord-tools {
+                    display: none;
+                    position: absolute;
+                    top: @topbarHeight + 15px;
+                    left: @navbarWidth -5;
+                    height: 80vh;
+                    width: 100%;
+                }
+
+                /*
+                    DASHBOARD
+                */
+                .dashboard {
+                    position: relative;
+                    top: 0;
+                    right: 0;
+                    margin-left: 8%;
+                    height: 80vh;
+
+                    .title-2 {
+                        font-size: 80%;
+                    }
+
+                    .title {
+                        width: auto;
+                        font-family: 'Metropolis';
+                        font-weight: 500;
+                        font-size: 150%;
+                    }
+
+                    .body {
+
+                        display: flex;
+
+                        p {
+                            margin: 0;
+                        }
+
+                        .infos {
+                            .user-infos {
+                                display: flex;
+
+                                .subscription {
+                                    .content {
+                                        height: 180px;
+                                        margin-top: 10px;
+                                        padding: 15px;
+                                        background-color: @objectColor;
+                                        border-radius: 10px;
+
+                                        .user {
+                                            display: flex;
+
+                                            .avatar {
+                                                img {
+                                                    width: 30px;
+                                                    border-radius: 10px;
+                                                }
+                                            }
+
+                                            .u {
+                                                margin-left: 10px;
+
+                                                p {
+                                                    margin: 0;
+                                                }
+
+                                                .user-email {
+                                                    font-weight: 500;
+                                                    font-size: 75%;
+                                                }
+
+                                                .license-type {
+                                                    font-weight: 200;
+                                                    font-size: 55%;
+                                                    font-family: 'Metropolis';
+                                                }
+                                            }
+
+                                        }
+
+                                        &:hover {
+                                            transform: scale(1.02);
+                                        }
+                                    }
+
+                                    .license {
+                                        margin-top: 20px;
+
+                                        .link-part {
+                                            width: 250px;
+                                            display: flex;
+
+                                            p {
+                                                font-size: 70%;
+                                                margin: 0;
+                                                margin-right: 10px;
+                                            }
+
+                                            .license-key {
+                                                font-size: 12px;
+                                                font-weight: bold;
+                                            }
+                                        }
+
+                                        .copy {
+                                            background-color: @blueColor;
+                                        }
+                                    }
+
+                                    .billing {
+                                        margin-top: 20px;
+                                        font-size: 70%;
+
+                                        #billing-date {
+                                            font-weight: 500;
+                                        }
+                                    }
+                                }
+
+                                .payment-information {
+                                    position: relative;
+                                    margin-left: 8%;
+
+                                    .content {
+                                        z-index: 1;
+                                        position: relative;
+                                        width: 340px;
+                                        height: 180px;
+                                        margin-top: 10px;
+                                        background-color: @objectColor;
+                                        border-radius: 10px;
+                                        padding: 15px;
+
+                                        .card-name {
+                                            z-index: 5;
+                                            font-size: 70%;
+                                            display: flex;
+
+                                            .card-type-img {
+                                                position: absolute;
+                                                top: 15px;
+                                                right: 15px;
+                                                width: 65px;
+                                            }
+                                        }
+
+                                        .card-details {
+                                            margin-top: 37px;
+
+                                            .card-number {
+                                                display: flex;
+
+                                                .last-numbers {
+                                                    margin-left: 5px;
+                                                }
+                                            }
+
+                                            .exp-date-all {
+                                                font-size: 60%;
+                                            }
+                                        }
+
+                                        .card-options {
+                                            margin-top: 30px;
+                                            display: flex;
+                                            width: auto;
+
+                                            .payment-btn {
+                                                background-color: @blueColor;
+                                            }
+
+                                            .cancel-btn {
+                                                margin-left: 8px;
+                                                background-color: @redColor;
+                                            }
+                                        }
+
+                                        .card-logo {
+                                            z-index: -1;
+                                            background: transparent url("../img/PS_Logo/Recurso_1.png") no-repeat center center;
+                                            position: absolute;
+                                            top: 50%;
+                                            left: 50%;
+                                            transform: translateX(-50%) translateY(-50%);
+                                            opacity: 0.2;
+                                            height: 100%;
+                                            width: 100%;
+                                            background-size: 30%;
+                                        }
+
+                                        &:hover {
+                                            transform: scale(1.02);
+                                        }
+                                    }
+                                }
+                            }
+
+                            .other-infos {
+                                margin-top: 10%;
+                                display: flex;
+
+                                .default-webhook {
+                                    width: 70%;
+
+                                    .content {
+                                        font-size: 70%;
+                                        margin-top: 10px;
+                                        background-color: @objectColor;
+                                        border-radius: 10px;
+                                        padding: 15px;
+
+                                        input {
+                                            color: white;
+                                            width: 100%;
+                                            font-size: 9.6px;
+                                            border: none;
+                                            border-bottom: 1px solid rgba(255, 255, 255, 0.603);
+                                            background-color: rgba(255, 0, 0, 0);
+                                        }
+
+                                        .webhook-btn {
+                                            margin: 10px 0;
+
+                                            .webhook-test-btn {
+                                                background-color: @yellowColor;
+                                            }
+
+                                            .webhook-save-btn {
+                                                background-color: @greenColor;
+                                            }
+                                        }
+
+                                        &:hover {
+                                            transform: scale(1.02);
+                                        }
+                                    }
+                                }
+
+                                .support {
+                                    margin-left: 8%;
+
+                                    .content {
+                                        transition-duration: 0.5s;
+                                        font-size: 70%;
+                                        margin-top: 10px;
+                                        background-color: @objectColor;
+                                        border-radius: 10px;
+                                        padding: 15px;
+                                        text-align: center;
+
+                                        .userguide {
+                                            transition-duration: 0.5s;
+                                            // font-size: 70%;
+                                            font-size: 9.6px;
+                                            outline: medium;
+
+                                            &::after {
+                                                transition-duration: 0.5s;
+                                                transform: translateX(-50%);
+                                                position: absolute;
+                                                bottom: 15px;
+                                                left: 50%;
+                                                width: 0px;
+                                                height: 1px;
+                                                border-radius: 30px;
+                                                background-color: white;
+                                                content: "";
+                                            }
+                                        }
+
+                                        &:hover {
+                                            transform: scale(1.02);
+                                            cursor: pointer;
+                                        }
+
+                                        &:hover .userguide::after {
+                                            transition-duration: 0.5s;
+                                            width: 30px;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        .cards {
+                            margin-left: 10%;
+
+                            .pcard {
+                                transition-duration: 0.5s;
+                                vertical-align: middle;
+                                display: flex;
+                                margin-top: 10%;
+                                border-radius: 10px;
+                                padding: 15px;
+                                background-color: blueviolet;
+
+                                .number {
+                                    font-weight: bold;
+                                    margin-left: 5px;
+                                    font-family: 'Metropolis';
+                                    margin-right: 15px;
+                                    font-size: 120%;
+                                }
+
+                                p {
+                                    transform: translateY(20%);
+                                    height: 100%;
+                                    vertical-align: middle;
+                                    font-size: 80%;
+                                    margin: 0;
+                                }
+
+                                &:hover {
+                                    transition-duration: 0.5s;
+                                    transform: scale(1.02);
+                                }
+                            }
+
+                            .renewal-days {
+                                background-color: #327EC5
+                            }
+
+                            .proxies-loaded {
+                                background-color: #5976C6
+                            }
+
+                            .browsers-running {
+                                background-color: #7A6CC0
+                            }
+
+                            .accounts-created {
+                                background-color: #9660B5
+                            }
+                        }
+
+                        .language {
+                            position: absolute;
+                            bottom: 0px;
+                            right: 20px;
+
+                            .dropdown button {
+                                background-color: @objectColor;
+                                border: none;
+                            }
+
+                            .dropdown-menu {
+                                background-color: @objectColor;
+                                min-width: 80px;
+                                text-align: center;
+                            }
+
+                            .dropdown-menu .dropdown-item:hover {
+                                background-color: @objectColor;
+                                filter: brightness(2);
+                            }
+
+                            .dropdown-item {
+                                color: white;
+                            }
+                        }
+                    }
+                }
+
+                /*
+                    SPOOF BROWSER
+                */
+                .spoof-browser {
+                    .title {
+                        margin: 0;
+                    }
+
+                    .body {
+                        text-align: center;
+
+                        .spoofSettings {
+                            width: 80%;
+                            display: flex;
+                            margin-right: 6.5%;
+
+                            .left-btn {
+                                display: flex;
+
+                                #spoofer-browser-createTasks {
+                                    background-color: @yellowColor ;
+                                }
+
+                                #spoofer-browser-startAll {
+                                    background-color: @greenColor ;
+                                }
+
+                                #spoofer-browser-stopAll {
+                                    background-color: @redColor ;
+                                }
+
+                                #spoofer-browser-deleteAll {
+                                    background-color: @blueColor;
+                                }
+
+                                #spoofer-browser-settings {
+                                    background-color: @objectColor ;
+                                }
+                            }
+
+                            .tasks-infos {
+                                width: auto !important;
+                                display: flex;
+                                border-radius: 15px;
+                                margin-right: 20px;
+                                background-color: @objectColor;
+
+                                .tasks-passed,
+                                .tasks-number {
+                                    padding: 8px;
+                                }
+
+                                .tasks-passed {
+                                    padding-right: 15px;
+                                }
+
+                                .tasks-number {
+                                    padding-left: 18px;
+                                    border-right: 1px solid @backgroundColor;
+                                }
+
+                                .number {
+                                    font-size: 100%;
+
+                                }
+
+                                p {
+                                    margin: 0;
+                                    transform: translateY(-10%);
+                                    font-size: 60%;
+                                }
+                            }
+                        }
+
+                        .spoofBody {
+                            position: relative;
+
+                            .settingsPart {
+                                display: flex;
+                                position: absolute;
+                                top: 40px;
+                                left: 0;
+
+                                .notificationsPart,
+                                .autofillPart {
+                                    .title {
+                                        font-weight: 700;
+                                        text-align: left;
+                                        font-size: 70%;
+                                    }
+
+                                    .body {
+                                        margin-top: 15px;
+                                    }
+
+                                    border-radius: 8px;
+                                    padding : 2%;
+                                }
+
+                                .notificationsPart {
+                                    width: 250px;
+                                    background-color: @objectColor;
+
+                                    .body {
+                                        .elt {
+                                            display: flex;
+
+                                            .elt-desc {
+                                                font-size: 60%;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .autofillPart {
+                                    width: 500px;
+                                    margin-left: 25px;
+                                    background-color: @objectColor;
+
+                                    .body {
+                                        .autofill-form {
+                                            display: flex;
+
+                                            .shipping-infos,
+                                            .payment-infos {
+                                                input {
+                                                    margin-top: 5px;
+                                                    width: 100%;
+                                                }
+
+                                                .flex-input {
+                                                    display: flex;
+
+                                                    input {
+                                                        width: 45%;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        .payment-infos {
+                                            margin-left: 15px;
+                                        }
+
+                                        .buttons {
+                                            position: relative;
+                                            width: 100%;
+                                            display: flex;
+                                            margin-top: 15px;
+                                            height: 20px;
+
+                                            button {
+                                                position: absolute;
+                                            }
+
+                                            #browser-autofill-clear-btn {
+                                                right: 100px;
+                                                top: 0;
+                                                background-color: @redColor;
+                                            }
+
+                                            #browser-autofill-save-btn {
+                                                right: 0;
+                                                top: 0;
+                                                background-color: @greenColor;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            .table-tasks {
+                                width: 100%;
+                                margin-top: 30px;
+                                left: 0;
+
+                                table {
+                                    border-spacing: 0 10px;
+                                    text-align: center;
+                                    width: 100%;
+
+                                    thead {
+                                        th {
+                                            font-size: 80%;
+                                            font-weight: 500;
+                                        }
+                                    }
+
+                                    tbody {
+                                        display: block;
+                                        height: 50vh;
+                                        max-height: 50vh;
+                                        overflow-y: scroll;
+                                        width: 100%;
+                                        padding-top: 15px;
+
+                                        tr {
+                                            border-radius: 10px;
+                                            margin-top: 10px;
+                                            transition-duration: 0.5s;
+                                            padding: 10px;
+                                            background-color: @objectColor;
+
+                                            td {
+                                                color: rgb(158, 158, 158);
+                                                font-size: 60%;
+                                                padding: 10px;
+                                                white-space: nowrap;
+                                            }
+
+                                            .browser-url {
+                                                transition-duration: 0.5s;
+                                                border-top-left-radius: 10px;
+                                                border-bottom-left-radius: 10px;
+                                            }
+
+                                            .browser-status {
+                                                text-align: center;
+
+                                                p {
+                                                    border-radius: 10px;
+                                                    display: inline-block;
+                                                    padding-right: 10px;
+                                                    padding-left: 10px;
+                                                    padding-top: 3px;
+                                                    padding-bottom: 3px;
+                                                    margin: 0;
+                                                }
+
+                                                .error {
+                                                    color: @redTextColor;
+                                                    background-color: @redColor;
+                                                }
+
+                                                .success {
+                                                    color: @greenTextColor;
+                                                    background-color: @greenColor;
+                                                }
+
+                                                .waiting {
+                                                    color: @yellowTextColor;
+                                                    background-color: @yellowColor;
+                                                }
+                                            }
+
+                                            .browser-actions {
+                                                i {
+                                                    font-size: 13px;
+                                                    cursor: pointer;
+                                                    color: white;
+                                                    margin: 0 5px;
+                                                }
+
+                                                border-top-right-radius: 10px;
+                                                border-bottom-right-radius: 10px;
+                                            }
+
+                                            &:hover .browser-url {
+                                                transition-duration: 0.5s;
+                                            }
+
+                                        }
+                                    }
+
+                                    thead,
+                                    tbody tr {
+                                        display: table;
+                                        width: 79%;
+                                        table-layout: fixed;
+                                        /* even columns width , fix width of table too*/
+                                    }
+                                }
+                            }
+
+                            .button-display {
+                                text-align: left;
+                                margin-top: 30px;
+
+                                button {
+                                    background-color: @objectColor;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                /** PROXIES PART **/
+                .proxies {
+                    .body {
+                        width: 100%;
+
+                        .proxiesSettings {
+                            width: 80%;
+                            display: flex;
+
+                            .proxies-list {
+                                display: flex;
+
+                                #proxies-list {
+                                    min-width: 150px;
+                                }
+
+                                #proxies-createList {
+                                    margin-left: 15px;
+                                    background-color: @yellowColor;
+                                }
+
+                                .select-list {
+                                    font-size: 80%;
+                                    margin-right: 10px;
+                                }
+                            }
+
+                            .proxies-test {
+                                display: flex;
+
+                                .website-testing {
+                                    width: 200px;
+                                }
+
+                                #proxies-test {
+                                    background-color: @greenColor;
+                                    margin-left: 15px;
+                                }
+
+                            }
+                        }
+
+                        .table-tasks {
+                            margin-top: 20px;
+                            padding: 10px;
+                            border-radius: 10px;
+                            background-color: @objectColor;
+                            width: 79%;
+
+                            table {
+                                width: 100%;
+                                text-align: center;
+
+                                thead {
+                                    th {
+                                        font-size: 80%;
+                                        font-weight: 500;
+                                    }
+                                }
+
+                                tbody {
+                                    display: block;
+                                    height: 50vh;
+                                    max-height: 50vh;
+                                    overflow-y: scroll;
+                                    width: 100%;
+                                    padding-top: 15px;
+
+                                    tr {
+                                        transition-duration: 0.5s;
+                                        padding: 10px;
+                                        background-color: @objectColor;
+
+                                        td {
+                                            font-weight: 100;
+                                            font-size: 60%;
+                                            padding: 10px;
+
+                                            img {
+                                                width: 10px;
+                                            }
+
+                                            .status {
+                                                border-radius: 10px;
+                                                display: inline-block;
+                                                padding-right: 10px;
+                                                padding-left: 10px;
+                                                padding-top: 3px;
+                                                padding-bottom: 3px;
+                                                margin: 0;
+                                            }
+
+                                            .error {
+                                                background-color: @redColor;
+                                                color: @redTextColor;
+                                            }
+
+                                            .valid {
+                                                background-color: @greenColor;
+                                                color: @greenTextColor;
+                                            }
+                                        }
+
+
+                                    }
+                                }
+
+                                thead,
+                                tbody tr {
+                                    display: table;
+                                    width: 100%;
+                                    table-layout: fixed;
+                                    /* even columns width , fix width of table too*/
+                                }
+
+                            }
+
+                            .table-settings {
+                                padding-top: 30px;
+
+                                .delete-list {
+                                    background-color: @redColor;
+                                }
+
+                                .add-proxies {
+                                    background-color: @greenColor;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .activity-generator {
+                    .title {
+                        margin: 0;
+                    }
+
+                    .body {
+                        text-align: center;
+
+                        .activitySettings {
+                            width: 80%;
+                            display: flex;
+                            margin-right: 6.5%;
+
+                            .left-btn {
+                                display: flex;
+
+                                #activity-generator-createTasks {
+                                    background-color: @yellowColor ;
+                                }
+
+                                #activity-generator-startAll {
+                                    background-color: @greenColor ;
+                                }
+
+                                #activity-generator-stopAll {
+                                    background-color: @redColor ;
+                                }
+
+                                #activity-generator-deleteAll {
+                                    background-color: @blueColor ;
+                                }
+
+                                #activity-generator-settings {
+                                    background-color: @objectColor ;
+                                }
+                            }
+
+                            .tasks-infos {
+                                width: auto !important;
+                                display: flex;
+                                border-radius: 15px;
+                                margin-right: 20px;
+                                background-color: @objectColor;
+
+                                .tasks-passed,
+                                .tasks-number {
+                                    padding: 8px;
+                                }
+
+                                .tasks-passed {
+                                    padding-right: 15px;
+                                }
+
+                                .tasks-number {
+                                    padding-left: 18px;
+                                    border-right: 1px solid @backgroundColor;
+                                }
+
+                                .number {
+                                    font-size: 100%;
+
+                                }
+
+                                p {
+                                    margin: 0;
+                                    transform: translateY(-10%);
+                                    font-size: 60%;
+                                }
+                            }
+                        }
+
+                        #captchaBody {
+                            .manage-accounts {
+                                display: none;
+                                margin-top: 20px;
+                                padding: 10px;
+                                width: 80%;
+                                background-color: @objectColor;
+                                border-radius: 10px;
+
+                                .content-div {
+                                    display: flex;
+
+                                    .gmail-part {
+
+                                        hr {
+                                            margin-top: 5px;
+                                            width: 90%;
+                                            height: 1px;
+                                            border-radius: 5px;
+                                            background-color: @backgroundColor;
+                                            margin-bottom: 20px;
+                                        }
+
+                                        .second-title {
+                                            width: 100%;
+                                            text-align: center;
+                                            margin: 0;
+                                            padding: 0;
+                                        }
+
+                                        .gmail-tab {
+                                            #gmail-accounts {
+                                                border-spacing: 0 10px;
+                                                text-align: center;
+                                                width: 100%;
+
+                                                thead {
+                                                    th {
+                                                        font-size: 80%;
+                                                        font-weight: 500;
+                                                    }
+                                                }
+
+                                                tbody {
+                                                    display: block;
+                                                    height: 45vh;
+                                                    max-height: 50vh;
+                                                    overflow-y: scroll;
+                                                    width: 100%;
+                                                    padding-top: 15px;
+
+                                                    tr {
+                                                        border-radius: 10px;
+                                                        margin-top: 10px;
+                                                        margin-right: 10px;
+                                                        transition-duration: 0.5s;
+                                                        padding: 10px;
+                                                        background-color: @backgroundColor;
+
+                                                        td {
+                                                            color: rgb(158, 158, 158);
+                                                            font-size: 60%;
+                                                            padding: 10px;
+                                                        }
+
+                                                        .gmail-url {
+                                                            transition-duration: 0.5s;
+                                                            border-top-left-radius: 10px;
+                                                            border-bottom-left-radius: 10px;
+                                                        }
+
+                                                        .gmail-actions {
+                                                            i {
+                                                                font-size: 15px;
+                                                                cursor: pointer;
+                                                                color: white;
+                                                                margin: 0 5px;
+                                                            }
+
+                                                            border-top-right-radius: 10px;
+                                                            border-bottom-right-radius: 10px;
+                                                        }
+
+                                                        &:hover .activity-url {
+                                                            transition-duration: 0.5s;
+                                                        }
+
+                                                    }
+                                                }
+
+                                                thead,
+                                                tbody tr {
+                                                    width: 100%;
+                                                    display: table;
+                                                    table-layout: fixed;
+                                                    /* even columns width , fix width of table too*/
+                                                }
+                                            }
+                                        }
+
+                                        .gmail-buttons {
+                                            display: flex;
+                                            margin-top: 10px;
+
+                                            .add-gmail {
+                                                background-color: @greenColor;
+                                            }
+
+                                            .blue {
+                                                background-color: @blueColor
+                                            }
+                                        }
+                                    }
+
+                                    .settings-part {
+                                        border-left: 2px solid @backgroundColor;
+                                        margin-left: 15px;
+                                        padding-left: 15px;
+
+                                        hr {
+                                            margin-top: 5px;
+                                            width: 200px;
+                                            height: 1px;
+                                            border-radius: 5px;
+                                            background-color: @backgroundColor;
+                                            margin-bottom: 20px;
+                                        }
+
+                                        .second-title {
+                                            width: 100%;
+                                            text-align: center;
+                                            margin: 0;
+                                            padding: 0;
+                                        }
+
+                                        .settings-part-body {
+                                            .subtitle-margin-top {
+                                                margin-top: 20px;
+                                            }
+
+                                            .settings-subtitle {
+                                                text-align: left;
+                                                font-size: 80%;
+                                                border-bottom: 1px solid white;
+                                                width: fit-content;
+                                            }
+
+                                            .switch-part {
+                                                text-align: left;
+                                                display: flex;
+                                                margin-top: 10px;
+                                                width: 90%;
+
+                                                .switch-info {
+                                                    margin: 0;
+                                                    width: 80%;
+                                                    font-size: 75%;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            .table-tasks {
+                                margin-top: 20px;
+                                padding: 10px;
+                                width: 80%;
+
+                                table {
+                                    border-spacing: 0 10px;
+                                    text-align: center;
+                                    width: 100%;
+
+                                    thead {
+                                        th {
+                                            font-size: 80%;
+                                            font-weight: 500;
+                                        }
+                                    }
+
+                                    tbody {
+                                        display: block;
+                                        height: 50vh;
+                                        max-height: 50vh;
+                                        overflow-y: scroll;
+                                        width: 100%;
+                                        padding-top: 15px;
+
+                                        tr {
+                                            border-radius: 10px;
+                                            margin-top: 10px;
+                                            transition-duration: 0.5s;
+                                            padding: 10px;
+                                            background-color: @objectColor;
+
+                                            td {
+                                                color: rgb(158, 158, 158);
+                                                font-size: 60%;
+                                                padding: 8px;
+                                            }
+
+                                            .activity-url {
+                                                transition-duration: 0.5s;
+                                                border-top-left-radius: 10px;
+                                                border-bottom-left-radius: 10px;
+                                            }
+
+                                            .activity-score {
+                                                .loader {
+                                                    margin-left: 50%;
+                                                    transform: translateX(-50%);
+                                                    border: 5px solid white;
+                                                    border-top: 5px solid @yellowColor;
+                                                    border-radius: 50%;
+                                                    width: 15px;
+                                                    height: 15px;
+                                                    animation: spin 2s linear infinite;
+                                                }
+                                            }
+
+                                            .activity-status {
+                                                text-align: center;
+
+                                                p {
+                                                    border-radius: 10px;
+                                                    display: inline-block;
+                                                    padding-right: 10px;
+                                                    padding-left: 10px;
+                                                    padding-top: 3px;
+                                                    padding-bottom: 3px;
+                                                    margin: 0;
+                                                }
+
+                                                .error {
+                                                    color: @redTextColor;
+                                                    background-color: @redColor;
+                                                }
+
+                                                .success {
+                                                    color: @greenTextColor;
+                                                    background-color: @greenColor;
+                                                }
+
+                                                .waiting {
+                                                    color: @yellowTextColor;
+                                                    background-color: @yellowColor;
+                                                }
+                                            }
+
+                                            .activity-actions {
+                                                i {
+                                                    font-size: 13px;
+                                                    cursor: pointer;
+                                                    color: white;
+                                                    margin: 0 5px;
+                                                }
+
+                                                border-top-right-radius: 10px;
+                                                border-bottom-right-radius: 10px;
+                                            }
+
+                                            &:hover .activity-url {
+                                                transition-duration: 0.5s;
+                                            }
+
+                                        }
+                                    }
+
+                                    thead,
+                                    tbody tr {
+                                        display: table;
+                                        width: 100%;
+                                        table-layout: fixed;
+                                        /* even columns width , fix width of table too*/
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .profile-converter {
+                    .body {
+                        .body-elements {
+                            text-align: center;
+                            display: flex;
+                            position: relative;
+
+                            .profile-from {
+
+                                .second-title {
+                                    margin-bottom: 15px;
+                                    font-size: 70%;
+                                    display: flex;
+
+                                    select {
+                                        font-size: 100%;
+                                        width: 150px;
+                                        height: 20px;
+                                    }
+                                }
+
+                                #drag-and-drop {
+                                    border-radius: 10px;
+                                    width: 350px;
+                                    height: 450px;
+                                    background-color: @objectColor;
+                                    position: relative;
+
+                                    .content-drag {
+                                        position: absolute;
+                                        top: 50%;
+                                        left: 50%;
+                                        transform: translateX(-50%) translateY(-50%);
+
+                                        .drag-and-drop-text {
+                                            font-size: 60%;
+
+                                            img {
+                                                width: 35px;
+                                            }
+
+                                            p {
+                                                margin-top: 5px;
+                                            }
+                                        }
+
+                                        .browse-local-files {
+                                            height: auto;
+                                            display: flex;
+
+                                            p {
+                                                margin: 0;
+                                                padding-right: 5px;
+                                                padding-top: 5px;
+                                                font-size: 60%;
+                                            }
+
+                                            button {
+                                                background-color: @blueColor;
+                                            }
+                                        }
+                                    }
+
+                                    .content-file {
+                                        display: none;
+                                        position: absolute;
+                                        top: 50%;
+                                        left: 50%;
+                                        transform: translateX(-50%) translateY(-50%);
+                                        text-align: center;
+
+                                        img {
+                                            width: 35px;
+                                        }
+
+                                        .file-name {
+                                            margin-top: 5px;
+                                            font-size: 80%;
+                                        }
+
+                                    }
+
+                                }
+                            }
+
+                            .profile-to {
+                                position: absolute;
+                                right: 22%;
+
+                                .second-title {
+                                    margin-bottom: 15px;
+                                    text-align: left;
+                                    font-size: 70%;
+                                }
+
+                                .profile-convert-to {
+                                    overflow-y: auto;
+                                    overflow-x: hidden;
+                                    border-radius: 10px;
+                                    width: 500px;
+                                    height: 450px;
+                                    background-color: @objectColor;
+
+                                    .container {
+                                        position: relative;
+                                        padding: 0;
+
+                                        .row {
+                                            margin: 0;
+                                            width: 100%;
+                                            justify-content: center;
+                                            margin-top: 20px;
+
+                                            .elt {
+                                                font-size: 60%;
+                                                margin: 1%;
+                                                padding: 0;
+                                                width: 80px;
+                                                height: 95px;
+                                                background-color: @objectColor;
+
+                                                .img-div {
+                                                    transition-duration: 0.5s;
+                                                    position: relative;
+                                                    left: 50%;
+                                                    transform: translateX(-50%);
+                                                    height: 65px;
+                                                    width: 65px;
+                                                    padding-top: 5px;
+                                                    padding-bottom: 5px;
+                                                    border-radius: 800px;
+                                                    background-color: rgb(87, 87, 87);
+
+                                                    img,
+                                                    svg {
+                                                        border-radius: 8px;
+                                                        position: absolute;
+                                                        top: 50%;
+                                                        left: 50%;
+                                                        transform: translateX(-50%) translateY(-50%);
+                                                        width: 43px;
+                                                    }
+
+
+                                                    &:hover {
+                                                        cursor: pointer;
+                                                        transition-duration: 0.5s;
+                                                    }
+                                                }
+
+                                                .selected {
+                                                    background-color: @blueColor;
+                                                }
+
+                                                p {
+                                                    text-align: center;
+                                                    margin-top: 5px;
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+
+                    .convert {
+                        margin-top: 10px;
+                        display: flex;
+                        width: 100%;
+
+                        #cancel-button {
+                            background-color: @redColor;
+                        }
+
+                        #convert-button {
+                            background-color: @blueColor;
+                        }
+                    }
+                }
+
+                .profile-manager {
+                    .title {
+                        margin: 0;
+                    }
+
+                    .body {
+                        text-align: center;
+
+                        .profile-buttons {
+                            display: flex;
+                        }
+
+                        #profileBody {
+                            display: flex;
+                            margin-top: 30px;
+
+                            .profiles-display {
+                                height: 425px;
+                                max-height: 475px;
+                                width: 650px;
+                                background-color: @objectColor;
+                                border-radius: 7px;
+                                overflow-y: scroll;
+                                padding-bottom: 20px;
+
+                                ul {
+                                    margin: 0;
+                                    padding: 0;
+                                    columns: 3;
+
+                                    li {
+                                        display: inline-block;
+
+                                        .profile-card {
+                                            cursor: pointer;
+                                            background: linear-gradient(rgb(224, 102, 21), purple);
+                                            text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.658);
+                                            margin-top: 30px;
+                                            position: relative;
+                                            border-radius: 7px;
+                                            width: 180px;
+                                            height: 105px;
+
+                                            .card-logo {
+                                                position: absolute;
+                                                top: 8px;
+                                                right: 8px;
+
+                                                img {
+                                                    opacity: 0.7;
+                                                    width: 30px;
+                                                }
+                                            }
+
+                                            .profile-infos {
+                                                padding-top: 25px;
+                                                padding-left: 10px;
+
+                                                .profile-name {
+                                                    text-align: left;
+                                                    font-weight: bold;
+                                                    font-size: 80%;
+                                                }
+
+                                                .profile-display {
+                                                    margin-top: 25px;
+                                                    display: flex;
+
+                                                    p {
+                                                        padding: 0;
+                                                        margin: 0;
+                                                    }
+
+                                                    .full-name {
+                                                        width: 60%;
+                                                        text-align: left;
+
+                                                        .full-name-title {
+                                                            font-size: 50%;
+                                                        }
+
+                                                        .full-name-field {
+                                                            font-size: 70%;
+                                                        }
+                                                    }
+
+                                                    .card-ending {
+                                                        width: 30%;
+                                                        text-align: left;
+
+                                                        .card-ending-title {
+                                                            font-size: 50%;
+                                                        }
+
+                                                        .card-ending-field {
+                                                            font-size: 70%;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+
+                            .profile-edition {
+                                position: relative;
+                                margin-left: 15px;
+                                height: 475px;
+                                width: 325px;
+                                background-color: @objectColor;
+                                border-radius: 7px;
+
+                                .profile-card-edition {
+                                    margin-left: 50%;
+                                    transform: translateX(-50%) translateY(-50%);
+                                    background: linear-gradient(rgb(224, 102, 21), purple);
+                                    border-radius: 7px;
+                                    width: 250px;
+                                    height: 150px;
+
+                                    .card-logo {
+                                        position: absolute;
+                                        top: 15px;
+                                        right: 15px;
+
+                                        img {
+                                            opacity: 0.7;
+                                            width: 40px;
+                                        }
+                                    }
+
+                                    .profile-infos {
+                                        padding-top: 40px;
+                                        padding-left: 15px;
+
+                                        .profile-name {
+                                            text-align: left;
+                                            font-weight: bold;
+                                        }
+
+                                        .profile-display {
+                                            margin-top: 30px;
+                                            display: flex;
+
+                                            p {
+                                                padding: 0;
+                                                margin: 0;
+                                            }
+
+                                            .full-name {
+                                                width: 60%;
+                                                text-align: left;
+
+                                                .full-name-title {
+                                                    font-size: 60%;
+                                                }
+
+                                                .full-name-field {
+                                                    font-size: 90%;
+                                                }
+                                            }
+
+                                            .card-ending {
+                                                width: 40%;
+                                                text-align: left;
+
+                                                .card-ending-title {
+                                                    font-size: 60%;
+                                                }
+
+                                                .card-ending-field {
+                                                    font-size: 90%;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .profile-edition-parts {
+                                    display: flex;
+
+                                    button {
+                                        transform: translateY(-55px);
+                                        background-color: @objectColor;
+                                        padding: 4px;
+                                        padding-right: 10px;
+                                        padding-left: 10px;
+                                        border: none;
+                                        color: white;
+                                        font-size: 80%;
+                                        border-radius: 7px;
+                                        transition-duration: 0.4s;
+
+                                        &:hover {
+                                            font-weight: bold;
+                                            transition-duration: 0.4s;
+                                            background-color: @backgroundColor;
+                                        }
+                                    }
+
+                                    .active {
+                                        background-color: @backgroundColor;
+                                    }
+
+                                    .button-div {
+                                        width: 33%;
+                                    }
+
+                                }
+
+                                .profile-edition-different-part {
+                                    margin-top: 15px;
+                                    padding-left: 15px;
+                                    transform: translateY(-55px);
+                                    position: relative;
+
+                                    .address-part,
+                                    .payment-part,
+                                    .settings-part {
+                                        transition-duration: 0.5s;
+
+                                        .profile-part,
+                                        .profile-part-divided {
+                                            text-align: left;
+                                            margin-top: 5px;
+
+                                            input,select {
+                                                width: 93%;
+                                                border: 1px solid rgba(128, 128, 128, 0.37);
+                                            }
+
+                                            p {
+                                                margin: 0;
+                                                padding: 0;
+                                                font-size: 60%;
+                                            }
+                                        }
+
+                                        .profile-part-divided {
+                                            display: flex;
+
+                                            div {
+                                                width: 48%;
+                                                text-align: left;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .profile-buttons {
+                                    position: absolute;
+                                    bottom: 10px;
+                                    left: 50%;
+                                    width: 100%;
+                                    text-align: center;
+                                    transform: translateX(-50%);
+                                    .btn-section {
+                                        width: 50%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .account-generator {
+                    .title {
+                        margin: 0;
+                    }
+
+                    .body {
+                        text-align: center;
+
+                        .accountSettings {
+                            width: 80%;
+                            display: flex;
+                            margin-right: 6.5%;
+
+                            .left-btn {
+                                display: flex;
+
+                                #account-generator-createTasks {
+                                    background-color: @yellowColor ;
+                                }
+
+                                #account-generator-startAll {
+                                    background-color: @greenColor ;
+                                }
+
+                                #account-generator-stopAll {
+                                    background-color: @redColor ;
+                                }
+
+                                #account-generator-settings {
+                                    background-color: @objectColor ;
+                                }
+                            }
+
+                            .tasks-infos {
+                                width: auto !important;
+                                display: flex;
+                                border-radius: 15px;
+                                margin-right: 20px;
+                                background-color: @objectColor;
+
+                                .tasks-passed,
+                                .tasks-number {
+                                    padding: 8px;
+                                }
+
+                                .tasks-passed {
+                                    padding-right: 15px;
+                                }
+
+                                .tasks-number {
+                                    padding-left: 18px;
+                                    border-right: 1px solid @backgroundColor;
+                                }
+
+                                .number {
+                                    font-size: 100%;
+
+                                }
+
+                                p {
+                                    margin: 0;
+                                    transform: translateY(-10%);
+                                    font-size: 60%;
+                                }
+                            }
+                        }
+
+                        .accountBody {
+                            position: relative;
+
+                            .settingsPart {
+                                display: flex;
+                                position: absolute;
+                                top: 40px;
+                                left: 0;
+
+                                .notificationsPart,
+                                .autofillPart {
+                                    .title {
+                                        font-weight: 700;
+                                        text-align: left;
+                                        font-size: 70%;
+                                    }
+
+                                    .body {
+                                        margin-top: 15px;
+                                    }
+
+                                    border-radius: 8px;
+                                    padding : 2%;
+                                }
+
+                                .notificationsPart {
+                                    width: 250px;
+                                    background-color: @objectColor;
+
+                                    .body {
+                                        .elt {
+                                            display: flex;
+
+                                            .elt-desc {
+                                                font-size: 60%;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                .autofillPart {
+                                    width: 500px;
+                                    margin-left: 25px;
+                                    background-color: @objectColor;
+
+                                    .body {
+                                        .autofill-form {
+                                            display: flex;
+
+                                            .shipping-infos,
+                                            .payment-infos {
+                                                input {
+                                                    margin-top: 5px;
+                                                    width: 100%;
+                                                }
+
+                                                .flex-input {
+                                                    display: flex;
+
+                                                    input {
+                                                        width: 45%;
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        .payment-infos {
+                                            margin-left: 15px;
+                                        }
+
+                                        .buttons {
+                                            position: relative;
+                                            width: 100%;
+                                            display: flex;
+                                            margin-top: 15px;
+                                            height: 20px;
+
+                                            button {
+                                                position: absolute;
+                                            }
+
+                                            #account-autofill-clear-btn {
+                                                right: 80px;
+                                                top: 0;
+                                                background-color: @redColor;
+                                            }
+
+                                            #account-autofill-save-btn {
+                                                right: 0;
+                                                top: 0;
+                                                background-color: @greenColor;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            .table-tasks {
+                                width: 80%;
+                                position: absolute;
+                                top: 40px;
+                                left: 0;
+
+                                table {
+                                    text-align: center;
+                                    width: 100%;
+
+                                    thead {
+                                        th {
+                                            font-size: 80%;
+                                            font-weight: 500;
+                                        }
+                                    }
+
+                                    tbody {
+                                        display: block;
+                                        height: 50vh;
+                                        max-height: 50vh;
+                                        overflow-y: scroll;
+                                        width: 100%;
+                                        padding-top: 15px;
+
+                                        tr {
+                                            border-radius: 10px;
+                                            margin-top: 10px;
+                                            transition-duration: 0.5s;
+                                            padding: 10px;
+                                            background-color: @objectColor;
+
+                                            td {
+                                                color: rgb(158, 158, 158);
+                                                font-size: 60%;
+                                                padding: 10px;
+                                            }
+
+                                            .account-website {
+                                                transition-duration: 0.5s;
+                                                border-top-left-radius: 10px;
+                                                border-bottom-left-radius: 10px;
+
+                                            }
+
+                                            .account-status {
+                                                text-align: center;
+
+                                                p {
+                                                    border-radius: 10px;
+                                                    display: inline-block;
+                                                    padding-right: 10px;
+                                                    padding-left: 10px;
+                                                    padding-top: 3px;
+                                                    padding-bottom: 3px;
+                                                    margin: 0;
+                                                }
+
+                                                .error {
+                                                    color: @redTextColor;
+                                                    background-color: @redColor
+                                                }
+
+                                                .success {
+                                                    color: @greenTextColor;
+                                                    background-color: @greenColor
+                                                }
+
+                                                .waiting {
+                                                    color: @yellowTextColor;
+                                                    background-color: @yellowColor
+                                                }
+                                            }
+
+                                            .account-actions {
+                                                img {
+                                                    margin-right: 10px;
+                                                    width: 15px;
+
+                                                    &:hover {
+                                                        cursor: pointer;
+                                                    }
+                                                }
+
+                                                border-top-right-radius: 10px;
+                                                border-bottom-right-radius: 10px;
+                                            }
+
+                                            &:hover .account-website {
+                                                transition-duration: 0.5s;
+                                            }
+
+                                        }
+                                    }
+
+                                    thead,
+                                    tbody tr {
+                                        display: table;
+                                        width: 100%;
+                                        table-layout: fixed;
+                                        /* even columns width , fix width of table too*/
+                                    }
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+                .supreme-signup {
+                    .title {
+                        margin: 0;
+                    }
+
+                    .body {
+                        text-align: center;
+
+                        .supremeSettings {
+                            width: 80%;
+                            display: flex;
+                            margin-right: 6.5%;
+
+                            .left-btn {
+                                display: flex;
+
+                                #supreme-signup-createTasks {
+                                    background-color: @yellowColor ;
+                                }
+
+                                #supreme-signup-startAll {
+                                    background-color: @greenColor ;
+                                }
+
+                                #supreme-signup-stopAll {
+                                    background-color: @redColor ;
+                                }
+
+                                #supreme-signup-deleteAll {
+                                    background-color: @blueColor;
+                                }
+
+                                #supreme-signup-profiles {
+                                    background-color: @objectColor ;
+                                }
+                            }
+
+                            .tasks-infos {
+                                width: auto !important;
+                                display: flex;
+                                border-radius: 15px;
+                                margin-right: 20px;
+                                background-color: @objectColor;
+
+                                .tasks-success,
+                                .tasks-number {
+                                    padding: 8px;
+                                }
+
+                                .tasks-success {
+                                    padding-right: 15px;
+                                }
+
+                                .tasks-number {
+                                    padding-left: 18px;
+                                    border-right: 1px solid @backgroundColor;
+                                }
+
+                                .number {
+                                    font-size: 100%;
+
+                                }
+
+                                p {
+                                    margin: 0;
+                                    transform: translateY(-10%);
+                                    font-size: 60%;
+                                }
+                            }
+                        }
+
+                        .supremeBody {
+                            position: relative;
+
+                            .table-tasks {
+                                width: 80%;
+                                position: absolute;
+                                top: 40px;
+                                left: 0;
+
+                                table {
+                                    text-align: center;
+                                    width: 100%;
+
+                                    thead {
+                                        th {
+                                            font-size: 80%;
+                                            font-weight: 500;
+                                        }
+                                    }
+
+                                    tbody {
+                                        display: block;
+                                        height: 50vh;
+                                        max-height: 50vh;
+                                        overflow-y: scroll;
+                                        width: 100%;
+                                        padding-top: 15px;
+
+                                        tr {
+                                            border-radius: 10px;
+                                            margin-top: 10px;
+                                            transition-duration: 0.5s;
+                                            padding: 10px;
+                                            background-color: @objectColor;
+
+                                            td {
+                                                color: rgb(158, 158, 158);
+                                                font-size: 60%;
+                                                padding: 8px;
+                                            }
+
+                                            .signup-id {
+                                                transition-duration: 0.5s;
+                                                border-top-left-radius: 10px;
+                                                border-bottom-left-radius: 10px;
+                                            }
+
+                                            .signup-status {
+                                                text-align: center;
+
+                                                p {
+                                                    border-radius: 10px;
+                                                    display: inline-block;
+                                                    padding-right: 10px;
+                                                    padding-left: 10px;
+                                                    padding-top: 3px;
+                                                    padding-bottom: 3px;
+                                                    margin: 0;
+                                                }
+
+                                                .error {
+                                                    color: @redTextColor;
+                                                    background-color: @redColor;
+                                                }
+
+                                                .success {
+                                                    color: @greenTextColor;
+                                                    background-color: @greenColor;
+                                                }
+
+                                                .waiting {
+                                                    color: @yellowTextColor;
+                                                    background-color: @yellowColor;
+                                                }
+                                            }
+
+                                            .signup-actions {
+                                                i {
+                                                    font-size: 13px;
+                                                    cursor: pointer;
+                                                    color: white;
+                                                    margin: 0 5px;
+                                                }
+
+                                                border-top-right-radius: 10px;
+                                                border-bottom-right-radius: 10px;
+                                            }
+
+                                            &:hover .signup-url {
+                                                transition-duration: 0.5s;
+                                            }
+
+                                        }
+                                    }
+
+                                    thead,
+                                    tbody tr {
+                                        display: table;
+                                        width: 100%;
+                                        table-layout: fixed;
+                                        /* even columns width , fix width of table too*/
+                                    }
+                                }
+                            }
+
+                            .profiles {
+                                margin-top: 20px;
+                                padding: 10px;
+                                width: 80%;
+                                background-color: @objectColor;
+                                border-radius: 10px;
+                                display: none;
+
+                                hr {
+                                    margin-top: 5px;
+                                    width: 90%;
+                                    height: 1px;
+                                    border-radius: 5px;
+                                    background-color: rgba(107, 107, 107, 0.384);
+                                    margin-bottom: 20px;
+                                }
+
+                                .second-title {
+                                    text-align: center;
+                                    width: 100%;
+                                    text-align: center;
+                                    margin: 0;
+                                    padding: 0;
+                                }
+
+                                .supreme-profile-tab {
+                                    #supreme-profiles {
+                                        border-spacing: 0 10px;
+                                        text-align: center;
+                                        width: 100%;
+
+                                        thead {
+                                            th {
+                                                font-size: 80%;
+                                                font-weight: 500;
+                                            }
+                                        }
+
+                                        tbody {
+                                            display: block;
+                                            height: 45vh;
+                                            max-height: 50vh;
+                                            overflow-y: scroll;
+                                            width: 100%;
+                                            padding-top: 15px;
+
+                                            tr {
+                                                border-radius: 10px;
+                                                margin-top: 10px;
+                                                margin-right: 10px;
+                                                transition-duration: 0.5s;
+                                                padding: 10px;
+                                                background-color: @backgroundColor;
+
+                                                td {
+                                                    font-size: 60%;
+                                                    color: rgb(158, 158, 158);
+                                                    padding: 10px;
+                                                }
+
+                                                .signup-profile {
+                                                    transition-duration: 0.5s;
+                                                    border-top-left-radius: 10px;
+                                                    border-bottom-left-radius: 10px;
+                                                }
+
+                                                .signup-actions {
+                                                    i {
+                                                        font-size: 13px;
+                                                        cursor: pointer;
+                                                        color: white;
+                                                        margin: 0 5px;
+                                                    }
+
+                                                    border-top-right-radius: 10px;
+                                                    border-bottom-right-radius: 10px;
+                                                }
+
+                                                &:hover .activity-url {
+                                                    transition-duration: 0.5s;
+                                                }
+
+                                            }
+                                        }
+
+                                        thead,
+                                        tbody tr {
+                                            width: 100%;
+                                            display: table;
+                                            table-layout: fixed;
+                                            /* even columns width , fix width of table too*/
+                                        }
+                                    }
+                                }
+
+                                .supreme-buttons {
+                                    display: flex;
+                                    margin-top: 10px;
+                                }
+
+                            }
+                        }
+
+                    }
+                }
+
+                .discord-tools {
+                    .title {
+                        margin: 0;
+                    }
+
+                    .body {
+                        text-align: center;
+
+                        .discordSettings {
+                            width: 80%;
+                            display: flex;
+                            margin-right: 6.5%;
+                            margin-top: 1.5%;
+
+                            .left-btn {
+                                display: flex;
+
+                                #discord-login {
+                                    background-color: @blueColor;
+                                }
+
+                                #discord-logout {
+                                    background-color: @yellowColor;
+                                }
+
+                                #discord-turn-on {
+                                    background-color: @greenColor;
+                                }
+
+                                #discord-turn-off {
+                                    background-color: @redColor;
+                                }
+
+                                #discord-status {
+                                    padding-left: 10px;
+                                    margin: 0;
+                                    font-size: 80%;
+                                }
+
+                                #discord-login-display {
+                                    margin: 0;
+                                    padding-left: 10px;
+                                    margin-left: 10px;
+                                    border-left: 1px solid white;
+                                    font-size: 80%;
+                                }
+
+                                #discord-status,
+                                #discord-login-display {
+                                    span {
+                                        padding: 5px 7px 4px 7px;
+                                        border-radius: 7px;
+                                    }
+
+                                    .success {
+                                        color: @greenTextColor;
+                                        background-color: @greenColor;
+                                    }
+
+                                    .error {
+                                        color: @redTextColor;
+                                        background-color: @redColor;
+                                    }
+
+                                    .waiting {
+                                        color: @yellowTextColor;
+                                        background-color: @yellowColor;
+                                    }
+                                }
+
+
+                            }
+                        }
+
+                        .discordBody {
+                            margin-top: 3%;
+                            position: relative;
+                            display: flex;
+
+                            .body-part {
+                                transition-duration: 0.5s;
+                                border-radius: 7px;
+                                width: 25%;
+                                height: 450px;
+                                background-color: @objectColor;
+
+                                .subtitle {
+                                    font-size: 100%;
+                                    margin-top: 2%;
+                                    margin-bottom: 1%;
+                                }
+
+                                hr {
+                                    margin-top: 0;
+                                    width: 60%;
+                                    background-color: white;
+                                    border-radius: 10px;
+                                }
+
+                                .input-add-div {
+                                    width: 100%;
+                                    margin-left: 4%;
+                                    margin-right: 4%;
+                                    text-align: center;
+                                    display: flex;
+
+                                    .input-add {
+                                        margin-right: 2%;
+                                        background-color: @backgroundColor;
+                                        width: 65%;
+                                    }
+
+                                    .button-add {
+                                        background-color: @greenColor;
+                                        width: 25%;
+                                    }
+                                }
+
+                                .body-display {
+                                    margin-top: 5%;
+                                    width: 98%;
+                                    height: 350px;
+                                    margin-left: 1%;
+                                    margin-right: 1%;
+                                    overflow-y: auto;
+
+
+                                }
+
+                                &:hover {
+                                    transition-duration: 0.5s;
+                                    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.519);
+                                }
+                            }
+
+                            .channels-part {
+                                .channel-id-element {
+                                    padding: 3px;
+                                    border-radius: 7px;
+                                    margin-right: 4%;
+                                    margin-left: 4%;
+                                    margin-top: 5%;
+                                    display: flex;
+                                    border: 1px solid rgba(163, 163, 163, 0.39);
+                                    background-color: @backgroundColor;
+
+                                    .channel-id {
+                                        font-size: 75%;
+                                        width: 80%;
+                                    }
+
+                                    .actions {
+                                        display: flex;
+                                        width: 20%;
+
+                                        i {
+                                            font-size: 12px;
+                                            cursor: pointer;
+                                            color: white;
+                                            margin-top: 4px;
+                                            margin-left: 10px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .keywords-part {
+                                .keyword-id-element {
+                                    padding: 3px;
+                                    border-radius: 7px;
+                                    margin-right: 4%;
+                                    margin-left: 4%;
+                                    margin-top: 5%;
+                                    display: flex;
+                                    border: 1px solid rgba(163, 163, 163, 0.39);
+                                    background-color: @backgroundColor;
+
+                                    .keyword-id {
+                                        font-size: 75%;
+                                        width: 80%;
+                                    }
+
+                                    .actions {
+                                        display: flex;
+                                        width: 20%;
+
+                                        i {
+                                            font-size: 12px;
+                                            cursor: pointer;
+                                            color: white;
+                                            margin-top: 4px;
+                                            margin-left: 10px;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .control-panel-part {
+                                .body-display {
+                                    margin-top: 10%;
+
+                                    .switch-element {
+                                        margin-left: 10%;
+                                        margin-top: 2%;
+                                        align-items: center;
+                                        text-align: center;
+                                        width: 90%;
+                                        display: flex;
+
+                                        .elt-desc {
+                                            margin: 0;
+                                            font-size: 80%;
+                                            width: 60%;
+                                        }
+
+                                        .switch-info {
+                                            padding-right: 5%;
+                                            width: 50%;
+                                            font-size: 80%;
+                                        }
+                                    }
+
+                                    .separate-line {
+                                        height: 2px;
+                                        background-color: rgba(255, 255, 255, 0.219);
+                                        width: 125px;
+                                        margin-top: 12px;
+                                        margin-bottom: 12px;
+                                        transition-duration: 1s;
+
+                                    }
+                                }
+                            }
+
+                            .scnd {
+                                margin-left: 2%;
+                            }
+                        }
+
+                    }
+                }
+            }
+
+            #disclaimer {
+                z-index: 2;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.692);
+
+                .modal-content {
+                    text-align: center;
+                    background-color: @backgroundColor;
+
+                    .modal-body {
+                        .modal-title {
+                            font-size: 120%;
+                            font-weight: 500;
+                        }
+
+                        .modal-form {
+                            margin-top: 20px;
+
+                            &>div {
+                                display: flex;
+                            }
+
+                            .form-text {
+                                font-weight: 300;
+                                text-align: center;
+                                font-size: 90%;
+                            }
+
+                            .form-button {
+                                margin-top: 20px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        /** MODALS PART**/
+
+
+        /**
+            Global Modals
+        **/
+
+        .modal {
+            height: 100vh;
+
+            .modal-content {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translateX(-50%) translateY(-50%);
+                background-color: @backgroundColor;
+
+                .modal-body {
+                    .modal-title {
+                        font-size: 120%;
+                        text-align: left;
+                        font-weight: 500;
+
+                    }
+
+                    .modal-form {
+                        margin-top: 20px;
+
+                        select,
+                        input {
+                            height: 25px;
+                            width: 230px;
+                        }
+
+                        .form-title {
+                            width: 43%;
+                            font-weight: 300;
+                            text-align: left;
+                            font-size: 90%;
+                        }
+                    }
+                }
+            }
+        }
+
+        #modalSignUpEditProfile,
+        #modalSupremeSignupTaskCreation,
+        #modalBrowserTaskCreation,
+        #modalBrowserMassUrlChange,
+        #modalBrowserNikeAccounts,
+        #modalSupremeSignupProfileCreation,
+        #modalProfileManagerExport,
+        #modalProfileManagerImportSelection {
+            .modal-content {
+                width: 400px;
+
+                .modal-body {
+                    .modal-form {
+                        .form {
+                            position: relative;
+                            display: flex;
+                        }
+
+                        .switch {
+                            transform: translateX(-25%);
+                            margin-right: 25%;
+                        }
+
+                        .form-nike-accounts {
+                            textarea {
+                                max-height: 560px;
+                                max-width: 365px;
+                            }
+                        }
+                        .form-export-type-profile {
+                            select {
+                                height: 70px;
+                            }
+                        }
+
+                        .form-amount-task {
+                            width: 100%;
+
+                            .form-amount {
+                                width: 50%;
+                                display: flex;
+
+                                .amount {
+                                    font-size: 80%;
+                                    width: 50%;
+                                    background: none;
+                                    border: 1px solid #80808075;
+                                }
+                            }
+
+                            button {
+                                background-color: @yellowColor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        #modalSignUpEditProfile,
+        #modalSupremeSignupProfileCreation {
+            .modal-content {
+                width: 800px;
+
+                .flex-column-modal {
+                    display: flex;
+
+                    .second-column {
+                        border-left: 2px solid rgba(255, 255, 255, 0.39);
+                        padding-left: 20px;
+                        margin-left: 20px;
+                    }
+                }
+            }
+
+        }
+
+        #modalAddProxyList {
+            .form-listName {
+                display: flex;
+            }
+
+            button {
+                background-color: @greenColor;
+            }
+        }
+
+        #modalAddProxies {
+            button {
+                background-color: @greenColor;
+            }
+
+            textarea {
+                width: 100%;
+                max-height: 560px;
+            }
+        }
+
+        #modalAccountGen2Captcha,
+        #modalProfileManagerCreation,
+        #modalAccountGenTaskCreationList,
+        #modalAccountGenTaskCreation {
+            .modal-content {
+                .modal-body {
+                    .modal-form {
+
+                        .form-api,
+                        .form-enable-api,
+                        .form-store,
+                        .form-email,
+                        .form-password,
+                        .form-button,
+                        .form-proxy,
+                        .form-jig-email,
+                        .form-profile-name {
+                            display: flex;
+                        }
+
+                        .form-enable-api,
+                        .form-jig-email {
+                            .switch {
+                                margin-right: 25%;
+                                transform: translateX(25%);
+                            }
+                        }
+
+                        .form-email {
+                            text-align: center;
+
+                            button {
+                                height: 20px;
+                                background-color: @yellowColor;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    #modalCaptchaAddGmail,
+    #modalCaptchaGenTaskCreation,
+    #modalCaptchaEditGmail {
+        .modal-content {
+            .modal-body {
+                .modal-form {
+
+                    .form-gmail-username,
+                    .form-gmail-password,
+                    .form-proxy,
+                    .form-specific-proxy {
+                        display: flex;
+                    }
+
+                    .form-gmail-password {
+                        input {
+                            margin-left: 50%;
+                            margin-bottom: 10%;
+                        }
+                    }
+
+                    .form-button {
+                        button {
+                            background-color: @yellowColor;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .loader-wrapper {
+        z-index: 99;
+        width: 100%;
+        height: 100%;
+        background-color: @backgroundColor;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        .user-loader {
+            opacity: 0;
+            animation: appear;
+            animation-duration: 1.25s;
+            animation-delay: 1s;
+            text-align: center;
+            position: relative;
+            top: 20%;
+
+            .avatar-img {
+                width: 40px;
+                height: 40px;
+                border-radius: 20px;
+            }
+
+            p {
+                margin-top: 15px;
+            }
+        }
+
+        .loader {
+
+            img {
+                top: 50%;
+                left: 50%;
+                position: absolute;
+                margin: auto;
+                transform: translateX(-50%) translateY(-50%);
+                color: white;
+                height: 64px;
+                width: 96px;
+
+            }
+
+        }
+
+        p {
+            color: white;
+            position: relative;
+            top: 44%;
+            text-align: center;
+        }
+    }
+}
+
+input {
+    color : 
+}
+
+

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://unpkg.com/tippy.js@6"></script>
+    <style>
+        @font-face {
+            font-family: 'Metropolis';
+            src: url('./assets/fonts/Spartan-VariableFont_wght.ttf') format('truetype');
+        }
+
+        @font-face {
+            font-family: 'Metropolis';
+            src: url('./assets/fonts/Metropolis-ExtraLight.otf') format('truetype');
+        }
+
+        * {
+            font-family: 'Metropolis';
+            color: white;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        #bar {
+            background-color: #2B3044;
+            width: 100%;
+            height: 35px;
+            top: 0;
+            -webkit-app-region: drag;
+            display: grid;
+            grid-template-columns: 2fr auto;
+        }
+
+        #bar div {
+            display: flex;
+            align-items: center;
+            margin: 0 5px;
+        }
+
+        #bar i {
+            -webkit-app-region: no-drag;
+            font-size: 15px;
+            color: white;
+            margin: 0 5px;
+        }
+
+        #bar i:hover {
+            cursor: pointer;
+        }
+
+        .circle {
+            margin: 0 5px;
+            -webkit-app-region: no-drag;
+            transition-duration: 0.2s;
+            position: relative;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+        }
+
+        .circle:hover {
+            transition-duration: 0.2s;
+            box-shadow: 0px 0px 12px rgb(255, 255, 255);
+        }
+
+        .close {
+            background-color: rgb(255, 5, 5);
+        }
+
+        .minimize {
+            background-color: rgb(255, 208, 0);
+        }
+
+        input {
+            width: 70%;
+            -webkit-app-region: no-drag;
+            background-color: #1c1f2c;
+            border: 0;
+            border-radius: 5px;
+            margin: 0 5px;
+            padding: 5px;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        .fas:hover {
+            color: rgb(50, 126, 197) !important;
+            transition: color ease-in-out .2s !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="bar">
+        <div>
+            <div class="circle close" data-tippy-content="Close Window" data-tippy-placement="right"></div>
+            <div class="circle minimize" data-tippy-content="Hide Window" data-tippy-placement="right"></div>
+            <input id="url">
+            <i class="fas fa-search"></i>
+        </div>
+        <div>
+            <i class="fas fa-arrow-left" data-tippy-content="Go back" data-tippy-placement="left"></i>
+            <i class="fas fa-arrow-right" data-tippy-content="Go forward" data-tippy-placement="left"></i>
+            <i class="fas fa-redo" data-tippy-content="Refresh" data-tippy-placement="left"></i>
+            <i class="fas fa-fill" data-tippy-content="Autofill" data-tippy-placement="left"></i>
+        </div>
+    </div>
+    <script>
+        console.log("test")
+        const { ipcRenderer, remote } = require('electron');
+        
+        tippy('[data-tippy-content]');
+
+        ipcRenderer.on('browser:updateurl', (e, url) => { console.log(url); document.querySelector('#url').value = url })
+
+        document.querySelector('.minimize').addEventListener('click', () => remote.getCurrentWindow().hide())
+        document.querySelector('.close').addEventListener('click', () => remote.getCurrentWindow().destroy())
+
+        document.querySelector('#url').addEventListener('keypress', e => e.key == 'Enter' && ipcRenderer.send('browser:loadurl', remote.getCurrentWindow().id, e.target.value))
+
+        document.querySelector('.fa-search').addEventListener('click', () => ipcRenderer.send('browser:loadurl', remote.getCurrentWindow().id, document.querySelector('#url').value))
+        document.querySelector('.fa-arrow-left').addEventListener('click', () => ipcRenderer.send('browser:goback', remote.getCurrentWindow().id))
+        document.querySelector('.fa-arrow-right').addEventListener('click', () => ipcRenderer.send('browser:goforward', remote.getCurrentWindow().id))
+        document.querySelector('.fa-redo').addEventListener('click', () => ipcRenderer.send('browser:refresh', remote.getCurrentWindow().id))
+        document.querySelector('.fa-fill').addEventListener('click', () => ipcRenderer.send('browser:autofill', remote.getCurrentWindow().id))
+    </script>
+</body>
+</html>

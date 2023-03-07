@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="../assets/css/authentication.css" />
+    <!--JQUERY-->
+    <script>
+        window.$ = window.jQuery = require('jquery');
+    </script>
+</head>
+
+<body>
+    <div id="moveBar"></div>
+    <div id="root">
+        <div class="action-btn">
+            <div class="circle close"></div>
+            <div class="circle minimize"></div>
+        </div>
+        <div class="twitter-part col-md-7">
+            <div class="twitter-embed">
+                <a class="twitter-timeline" data-lang="en" data-width="400" data-height="500" data-theme="dark"
+                    href="https://twitter.com/PrimeSltns">Tweets by PrimeSltns
+                </a>
+                <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+            </div>
+        </div>
+        <div class="connection-part col-md-6">
+            <div class="connection">
+                <div class="text">
+                    <div class="text1">Welcome to Prime Solutions !</div>
+                    <div class="text2">Please login using your license key</div>
+                </div>
+                <div class="login">
+                    <input type="text" placeholder="License key" id="license_key" maxlength = "29">
+                    <button id="authenticate_btn">Authenticate</button>
+                </div>
+            </div>
+        </div>
+        <div class="grey-background"></div>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader-wrapper">
+        <div class="loader">
+            <img src="../assets/img/logo.gif">
+        </div>
+        <p>Loading ...</p>
+    </div>
+
+    <div id="toast" style="display: none;"></div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+
+    <script>
+    
+        //Change dynamically the embed size 
+        window.onresize = function () {
+            var longueur = window.innerWidth;
+            var hauteur = window.innerHeight;
+
+            var twitterEmbed = document.getElementsByClassName('twitter-timeline')[0]
+            twitterEmbed.dataset.width = longueur / 4
+            twitterEmbed.dataset.height = hauteur / 4
+        }
+    </script>
+    <!--Electron events-->
+    <script>
+        const remote = require('electron').remote;
+        const ipcRenderer = require('electron').ipcRenderer
+        const key_regex = new RegExp('(([a-zA-Z0-9]){5}-){4}([a-zA-Z0-9]){5}')
+
+        //Login button 
+        $('#authenticate_btn').click((e) => {
+            var license_key = $('#license_key').val().trim();
+            if (key_regex.test(license_key)) ipcRenderer.send('license_auth', license_key)
+            else toast("error","Wrong key format")
+        });
+
+        //Close button
+        $('.close').click(function () {
+            remote.BrowserWindow.getFocusedWindow().close();
+            ipcRenderer.send('close-app', null);
+        })
+        //Minimize Button
+        $('.minimize').click(function () {
+            remote.BrowserWindow.getFocusedWindow().minimize();
+        })
+
+        ipcRenderer.on("auth-toast", (event, arg) => {
+            toast(arg[0], arg[1])
+        })
+
+        //Hide by default
+        $('#authenticate_btn').hide();
+        //Button animation
+        $('#license_key').on("keypress keydown keyup change", e=>{
+            if($('#license_key').val().length >= 29){
+                $('#authenticate_btn').fadeIn("slow")
+                $('#license_key').fadeIn("slow")
+            }
+            else 
+                $('#authenticate_btn').fadeOut("slow")
+        })
+
+    </script>
+    <!-- Loading animation -->
+    <script>
+        console.log(window.location.href)
+        document.addEventListener('DOMContentLoaded', (e) => {
+            setTimeout(() => {
+                $('.loader-wrapper').fadeOut('slow');
+            }, 4300)
+        })
+    </script>
+    <script src="../assets/js/misc/toast.js"></script>
+</body>
+
+</html>

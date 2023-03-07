@@ -1,0 +1,229 @@
+@font-face {
+  font-family: 'Metropolis';
+  src: url('../fonts/Metropolis-ExtraLight.otf') format('truetype');
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+button,
+input {
+  outline: none;
+}
+button:focus,
+input:focus {
+  outline: none;
+}
+body {
+  background-color: #1c1f2c;
+  background-size: cover;
+  font-family: 'Metropolis';
+  user-select: none;
+}
+body #moveBar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 45px;
+  -webkit-app-region: drag;
+}
+body .close,
+body .minimize {
+  -webkit-app-region: no-drag;
+}
+body #root {
+  display: flex;
+}
+body #root .action-btn {
+  z-index: 100;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  padding: 2%;
+  width: 10%;
+}
+body #root .action-btn .circle {
+  transition-duration: 0.2s;
+  position: relative;
+  border-radius: 50%;
+  width: 12px;
+  height: 12px;
+}
+body #root .action-btn .circle:hover {
+  transition-duration: 0.2s;
+  box-shadow: 0px 0px 12px #ffffff;
+}
+body #root .action-btn .close {
+  background-color: #ff0505;
+  float: left;
+}
+body #root .action-btn .minimize {
+  background-color: #ffd000;
+  margin: auto;
+}
+body #root .twitter-part {
+  z-index: 1;
+  background-color: #1c1f2c;
+}
+body #root .twitter-part .twitter-embed {
+  transition-duration: 1s;
+  justify-content: center;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
+}
+body #root .twitter-part .twitter-embed #twitter-widget-0 {
+  transition-delay: 0.2s;
+  transition-duration: 0.9s;
+}
+body #root .twitter-part .twitter-embed:hover {
+  transform: translateX(-50%) translateY(-50%) scale(1.01);
+}
+body #root .connection-part {
+  background-color: #2B3044;
+  z-index: 1;
+  transition-duration: 0.5s;
+  box-shadow: -30px 0px 30px rgba(0, 0, 0, 0.562);
+}
+body #root .connection-part .connection {
+  margin-top: 50%;
+  transform: translateX(-40%);
+  margin-left: 35%;
+}
+body #root .connection-part .connection .text {
+  color: white;
+  transition-duration: 0.5s;
+}
+body #root .connection-part .connection .text .text1 {
+  font-family: 'Metropolis';
+  font-weight: bold;
+  font-size: 130%;
+}
+body #root .connection-part .connection .text .text2 {
+  margin-left: 2px;
+  font-size: 80%;
+}
+body #root .connection-part .connection .login {
+  margin-top: 6%;
+}
+body #root .connection-part .connection .login #license_key {
+  color: white;
+  padding: 3px;
+  padding-right: 5px;
+  padding-left: 5px;
+  transition-duration: 0.5s;
+  width: 275px;
+  border: 1px solid rgba(255, 255, 255, 0.411);
+  background-color: rgba(0, 0, 0, 0.034);
+  border-radius: 7px;
+  text-align: center;
+  font-size: 90%;
+  outline: none;
+}
+body #root .connection-part .connection .login #license_key:hover {
+  transform: scale(1.02);
+  transition-duration: 0.73;
+}
+body #root .connection-part .connection .login #license_key::placeholder {
+  color: rgba(255, 255, 255, 0.493);
+}
+body #root .connection-part .connection .login #authenticate_btn {
+  position: relative;
+  transition-duration: 0.73;
+  width: 275px;
+  font-size: 90%;
+  margin-top: 15px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-right: 15px;
+  padding-left: 15px;
+  height: auto;
+  font-family: 'Metropolis';
+  border-radius: 7px;
+  border: none;
+  color: white;
+  background-color: #1c1f2c;
+}
+body #root .connection-part .connection .login #authenticate_btn:after {
+  content: '✔';
+  position: absolute;
+  opacity: 0;
+  top: 6px;
+  right: 20%;
+  transition: all 0.5s;
+}
+body #root .connection-part .connection .login #authenticate_btn:hover {
+  transition-duration: 0.73;
+}
+body #root .connection-part .connection .login #authenticate_btn:hover:after {
+  padding-right: 18px;
+  opacity: 1;
+}
+body #root .connection-part .connection #discord-pic {
+  margin-left: 1%;
+  margin-bottom: 1%;
+  line-height: 10px;
+}
+body #root .connection-part:hover {
+  transition-duration: 0.5s;
+  transform: translateX(-5%);
+}
+body #root .twitter-part,
+body #root .connection-part {
+  height: 100vh;
+}
+body #root .grey-background {
+  z-index: -9;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.664);
+}
+body .loader-wrapper {
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  background-color: #1c1f2c;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+body .loader-wrapper .loader img {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  margin: auto;
+  transform: translateX(-50%) translateY(-50%);
+  color: white;
+  height: 64px;
+  width: 96px;
+}
+body .loader-wrapper p {
+  color: white;
+  position: relative;
+  top: 57%;
+  text-align: center;
+}
+body #toast {
+  font-size: 15px;
+  font-weight: 400;
+  width: 300px;
+  background-color: #0c0d13;
+  color: white;
+  text-align: center;
+  border-radius: 3px;
+  padding: 10px;
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  overflow: hidden;
+  z-index: 1051;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
+}

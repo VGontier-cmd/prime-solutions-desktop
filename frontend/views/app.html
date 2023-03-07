@@ -1,0 +1,1919 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!--CSS-->
+    <link rel="stylesheet" type="text/css" href="../assets/css/app.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css">
+    <!--JQUERY AND CONST IMPORT-->
+    <script>
+        window.$ = window.jQuery = require('jquery');
+        const Store = require('electron-store');
+        const encryptionKey = '75866161b7adaa1e31f868036c1b1a98';
+        const store = new Store({
+            encryptionKey
+        });
+        const {
+            clipboard,
+            remote,
+            ipcRenderer,
+            remote: {
+                dialog,
+                session
+            },
+            shell
+        } = require('electron');
+        const isDev = require('electron-is-dev');
+        var request = require('request');
+    </script>
+    <script src="../assets/js/main.js" defer></script>
+    <script src="../assets/js/misc/toast.js" defer></script>
+</head>
+
+<body>
+    <div id="root">
+        <div id="dragbar"></div>
+        <div class="navbar" style="-webkit-app-region: drag">
+            <div class="action-btn">
+                <div class="btn-window">
+                    <div class="circle close"></div>
+                </div>
+                <div class="btn-window">
+                    <div class="circle minimize"></div>
+                </div>
+                <div class="btn-window">
+                    <div class="circle maximize"></div>
+                </div>
+            </div>
+            <div class="tools-list" id="tools-list">
+                <div data-num="1" class="tool active" data-toggle="popover" data-trigger="hover"
+                    data-content='Dashboard'>
+                    <i class="fas fa-home"></i>
+                </div>
+                <div data-num="2" class="tool" data-toggle="popover" data-trigger="hover" data-content='Spoof Browser'>
+                    <i class="fab fa-chrome"></i>
+                </div>
+                <div data-num="3" class="tool" data-toggle="popover" data-trigger="hover" data-content='Captcha Farmer'>
+                    <i class="fab fa-google"></i>
+                </div>
+                <div data-num="4" class="tool" data-toggle="popover" data-trigger="hover"
+                    data-content='Profile Manager'>
+                    <i class="fas fa-user-cog"></i>
+                </div>
+                <div data-num="5" class="tool" data-toggle="popover" data-trigger="hover" data-content='Discord Tools'>
+                    <i class="fab fa-discord"></i>
+                </div>
+                <div data-num="6" class="tool" data-toggle="popover" data-trigger="hover"
+                    data-content='Account Generator'>
+                    <i class="fas fa-user-plus"></i>
+                </div>
+                <div data-num="7" class="tool" data-toggle="popover" data-trigger="hover" data-content='Proxies'>
+                    <i class="fas fa-project-diagram"></i>
+                </div>
+                <div data-num="8" class="tool" data-toggle="popover" data-trigger="hover" data-content='Supreme Signup'>
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+
+            </div>
+            <div class="logout" id="logout-btn" data-toggle="popover" data-trigger="hover" data-content='Sign Out'>
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <div class="app-clock-display">
+                <p id="app-clock">00:00:00</p>
+            </div>
+            <div class="app-version-display">
+                <p id="app-version"></p>
+            </div>
+        </div>
+        <div class="tools-category">
+            <div class="top">
+                <div class="logo">
+                    <img src="../assets/img/PS_Logo/Recurso_1.png" />
+                </div>
+                <div class="left-infos">
+                    <div class="user-infos">
+                        <div class="infos align-items-center">
+                            <div class="avatar"><img src="../assets/img/icon.ico" class="avatar-img" /></div>
+                            <div class="user">
+                                <p class="user-name">User</p>
+                                <p class="license-type small">Renewal</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notifications" data-content="0">
+                        <img class="bell" src="../assets/img/bell.png">
+                        <div class="notifications-center">
+                            <p class="noti-title">Notification(s)</p>
+                            <p class="close-frame">X</p>
+                            <div class="body custom-scrollbar" id="notification-body">
+                                <!--Notifications body-->
+                            </div>
+                            <div class="footer">
+                                <button class="global-button clear-all-notifs">Clear all notification(s)</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="tools">
+                <div class="tool-element dashboard">
+                    <p class="title" data-dashboard-title>Dashboard</p>
+                    <div class="body">
+                        <div class="infos">
+                            <div class="user-infos">
+                                <div class="subscription">
+                                    <p class="title-2" data-dashboard-subscription-title>Subscription</p>
+                                    <div class="content">
+                                        <div class="user">
+                                            <div class="avatar">
+                                                <img src="../assets/img/logo.png" class="avatar-img" />
+                                            </div>
+                                            <div class="u">
+                                                <p class="user-email">user@gmail.com</p>
+                                                <p class="license-type small">Renewal</p>
+                                            </div>
+                                        </div>
+                                        <div class="license">
+                                            <div class="link-part">
+                                                <p class="license-key" data-license-key>License Key <span> :
+                                                    </span><input type="password" class="license-keyF global-input"
+                                                        value="•••••••••••••••••••" disabled /></p>
+                                            </div>
+                                            <button class="copy global-button" data-license-copy>Copy</button>
+                                        </div>
+                                        <div class="billing">
+                                            <p data-billing-date>Next renewal : <span id="billing-date"> Ø </span></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="payment-information">
+                                    <p class="title-2" data-payment-information>Payment Information</p>
+                                    <div class="content">
+                                        <div class="card-name">
+                                            <span style="display:flex">
+                                                <p class="user-name">User </p><span class="card-type">'s
+                                                    Card</span><span>
+                                                    <img class="card-type-img" src="../assets/img/visa.png" />
+                                        </div>
+                                        <div class="card-details">
+                                            <div class="card-number">
+                                                <p>•••• •••• •••• ••••</p><span class="last-numbers"></span>
+                                            </div>
+                                            <p class="exp-date-all">exp <span class="exp-date">••/••</span></p>
+                                        </div>
+                                        <div class="card-options justify-content-center">
+                                            <button class="payment-btn global-button" data-payment-details
+                                                onclick='shell.openExternal("https://dash.primesolutions.app/login");'>Edit
+                                                payment
+                                                details</button>
+                                            <button class="cancel-btn global-button" data-payment-cancel
+                                                onclick='shell.openExternal("https://dash.primesolutions.app/login");'>Cancel
+                                                Subscription</button>
+                                        </div>
+                                        <span class="card-logo" /></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="other-infos">
+                                <div class="default-webhook">
+                                    <p class="title-2" data-webhook-title>Default Webhook</p>
+                                    <div class="content">
+                                        <input id="webhook" type="text" placeholder="Webhook Url" />
+                                        <div class="webhook-btn">
+                                            <button id="saveWebhook" class="webhook-save-btn global-button"
+                                                data-webhook-save>Save</button>
+                                            <button id="testWebhook" class="webhook-test-btn global-button"
+                                                data-webhook-test>Test
+                                                Webhook</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="support">
+                                    <p class="title-2" data-support-title>Support</p>
+                                    <div class="content">
+                                        <a class="userguide" data-support-userguide
+                                            href="https://discord.com/channels/703636825696239737/754280616777875477"
+                                            target="_blank">Check our userguide</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cards">
+                            <div class="pcard renewal-days">
+                                <span class="number">Ø</span>
+                                <p data-card-renewal>days until renewal</p>
+                            </div>
+                            <div class="pcard proxies-loaded">
+                                <span class="number">0</span>
+                                <p data-card-proxies>proxies loaded</p>
+                            </div>
+                            <div class="pcard browsers-running">
+                                <span class="number">0</span>
+                                <p data-card-spoof-browser>spoof browsers created</p>
+                            </div>
+                            <div class="pcard accounts-created">
+                                <span class="number">0</span>
+                                <p data-card-account-created>total accounts created</p>
+                            </div>
+                        </div>
+                        <div class="language">
+                            <div class="dropdown dropup">
+                                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownLanguage"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    🇬🇧
+                                </button>
+                                <div class="dropdown-menu dropdown-language" aria-labelledby="dropdownLanguage">
+                                    <a class="dropdown-item language-item" href="#">🇫🇷</a>
+                                    <a class="dropdown-item language-item" href="#">🇩🇪</a>
+                                    <a class="dropdown-item language-item" href="#">🇪🇸</a>
+                                    <a class="dropdown-item language-item" href="#">🇨🇳</a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tool-element spoof-browser">
+                    <p class="title" data-spoof-browser-title>Spoof Browser</p>
+                    <div class="body">
+                        <div class="spoofSettings justify-content-between">
+                            <div class="left-btn align-items-center">
+                                <button class="global-button" id="spoofer-browser-createTasks" type="button"
+                                    data-toggle="modal" data-target="#modalBrowserTaskCreation"
+                                    data-tasks-creation>Create task</button>
+                                <button class="global-button" id="spoofer-browser-startAll" data-tasks-start-all>Start
+                                    all</button>
+                                <button class="global-button" id="spoofer-browser-stopAll" data-tasks-stop-all>Stop
+                                    all</button>
+                                <button class="global-button" id="spoofer-browser-deleteAll"
+                                    data-tasks-delete-all>Delete
+                                    all</button>
+                                <button class="global-button blue" id="spoofer-browser-showAll" data-tasks-show-all>Show
+                                    all</button>
+                                <button class="global-button blue" id="spoofer-browser-hideAll" data-tasks-hide-all>Hide
+                                    all</button>
+                                <button class="global-button" id="spoofer-browser-settings" data-tasks-settings
+                                    style="display: none;">Settings</button>
+                            </div>
+                            <div class="tasks-infos">
+                                <div class="tasks-number">
+                                    <div class="number" id="tasksNumberBrowser">0</div>
+                                    <p data-tasks>task(s)</p>
+                                </div>
+                                <div class="tasks-passed">
+                                    <div class="number">0</div>
+                                    <p data-tasks-passed>passed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="spoofBrowserBody" class="spoofBody">
+                            <div class="settingsPart" style="display: none;">
+                                <div class="notificationsPart">
+                                    <p class="title" date-notifications>Notifications</p>
+                                    <div class="body">
+                                        <div class="elt justify-content-between">
+                                            <p class="elt-desc" data-tasks-passed-splash>Passed splash</p>
+                                            <label class="switch">
+                                                <input type="checkbox" id="browser-notifications-splash" />
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="elt justify-content-between">
+                                            <p class="elt-desc" data-proxy-error>Proxy error</p>
+                                            <label class="switch">
+                                                <input type="checkbox" id="browser-notifications-proxy" />
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                        <div class="elt justify-content-between">
+                                            <p class="elt-desc" data-open-passed-tab>Open passed tab</p>
+                                            <label class="switch">
+                                                <input type="checkbox" id="browser-notifications-passed" />
+                                                <span class="slider"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="autofillPart">
+                                    <p class="title" data-autofill-settings>Autofill settings</p>
+                                    <div class="body">
+                                        <div class="autofill-form">
+                                            <div class="shipping-infos">
+                                                <div class="flex-input justify-content-between">
+                                                    <input class="autofill-input first-name" type="text"
+                                                        placeholder="First name" id="browser-autofill-first-name"
+                                                        maxlength="20" />
+                                                    <input class="autofill-input last-name" type="text"
+                                                        placeholder="Last name" id="browser-autofill-last-name"
+                                                        maxlength="20" />
+                                                </div>
+                                                <input class="autofill-input email" type="text" placeholder="email"
+                                                    id="browser-autofill-email" maxlength="40" />
+                                                <input class="autofill-input street" type="text" placeholder="Street 1"
+                                                    id="browser-autofill-street" maxlength="70" />
+                                                <div class="flex-input justify-content-between">
+                                                    <input class="autofill-input street-2" type="text"
+                                                        placeholder="Street 2" id="browser-autofill-street-2"
+                                                        maxlength="50" />
+                                                    <input class="autofill-input street-3" type="text"
+                                                        placeholder="Street 3" id="browser-autofill-street-3"
+                                                        maxlength="50" />
+                                                </div>
+                                                <div class="flex-input justify-content-between">
+                                                    <input class="autofill-input zip" type="text" placeholder="ZIP"
+                                                        id="browser-autofill-zip" maxlength="10" />
+                                                    <input class="autofill-input city" type="text" placeholder="City"
+                                                        id="browser-autofill-city" maxlength="30" />
+                                                </div>
+                                                <div class="flex-input justify-content-between">
+                                                    <input class="autofill-input state" type="text" placeholder="State"
+                                                        id="browser-autofill-state" maxlength="30" />
+                                                    <input class="autofill-input country" type="text"
+                                                        placeholder="Country" id="browser-autofill-country"
+                                                        maxlength="30" />
+
+                                                </div>
+                                            </div>
+                                            <div class="payment-infos">
+                                                <input class="autofill-input cc-number" type="text"
+                                                    placeholder="Credit Card number" id="browser-autofill-cc-number"
+                                                    maxlength="16" />
+                                                <div class="flex-input justify-content-between">
+                                                    <input class="autofill-input exp-date" type="text"
+                                                        placeholder="Exp. date" id="browser-autofill-exp-date"
+                                                        maxlength="5" />
+                                                    <input class="autofill-input cvc" type="text" placeholder="CVC"
+                                                        id="browser-autofill-cvc" maxlength="4" />
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="buttons">
+                                            <button id="browser-autofill-clear-btn" class="global-button"
+                                                data-tasks-clear>Clear</button>
+                                            <button id="browser-autofill-save-btn" class="global-button"
+                                                data-webhook-save>Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-tasks">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th data-tasks-url>URL</th>
+                                            <th data-tasks-proxy>Proxy</th>
+                                            <th data-tasks-status>Status</th>
+                                            <th data-tasks-actions>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="custom-scrollbar">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="button-display">
+                                <button class="global-button" id="spoofer-browser-nike-accounts" data-nike-accounts
+                                    data-toggle="modal" data-target="#modalBrowserNikeAccounts">Nike
+                                    Accounts</button>
+                                <button class="global-button" id="spoofer-browser-massUrlChange"
+                                    data-tasks-mass-url-change data-toggle="modal"
+                                    data-target="#modalBrowserMassUrlChange">Mass URL change</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tool-element activity-generator">
+                    <p class="title">Captcha Farmer</p>
+                    <div class="body">
+                        <div class="activitySettings justify-content-between">
+                            <div class="left-btn align-items-center">
+                                <button class="global-button" id="activity-generator-createTasks" type="button"
+                                    data-toggle="modal" data-target="#modalCaptchaGenTaskCreation"
+                                    data-tasks-creation>Create task</button>
+                                <button class="global-button" id="activity-generator-startAll"
+                                    data-tasks-start-all>Start all</button>
+                                <button class="global-button" id="activity-generator-stopAll" data-tasks-stop-all>Stop
+                                    all</button>
+                                <button class="global-button" id="activity-generator-deleteAll"
+                                    data-tasks-delete-all>Delete
+                                    all</button>
+                                <button class="global-button blue" id="activity-generator-test-score-all"
+                                    data-test-score-for-all>Test score for all</button>
+                                <button class="global-button grey" id="activity-generator-accounts"
+                                    data-accounts-and-settings>Accounts & Settings</button>
+                            </div>
+                            <div class="tasks-infos">
+                                <div class="tasks-number">
+                                    <div class="number" id="tasksNumberCaptcha">0</div>
+                                    <p data-tasks>tasks</p>
+                                </div>
+                                <div class="tasks-passed">
+                                    <div class="number" id="goodAccs">0</div>
+                                    <p data-tasks-good>good</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="captchaBody">
+                            <div class="manage-accounts">
+                                <div class="content-div">
+                                    <div class="gmail-part">
+                                        <p class="second-title" data-gmail-accounts-title>Gmail Accounts</p>
+                                        <hr>
+                                        <div class="gmail-tab">
+                                            <table id="gmail-accounts">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Gmail</th>
+                                                        <th data-tasks-proxy>Proxy</th>
+                                                        <th data-tasks-actions>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="custom-scrollbar">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="gmail-buttons">
+                                            <button type="button" class="add-gmail global-button" data-toggle="modal"
+                                                data-target="#modalCaptchaAddGmail" data-add-gmail>Add new
+                                                Gmail</button>
+                                            <button class="global-button red" id="activity-generator-delete-all"
+                                                data-delete-all-accounts>Delete all accounts</button>
+                                            <button class="global-button blue" id="activity-generator-import"
+                                                data-import-accounts>Import accounts</button>
+                                            <button class="global-button yellow" id="activity-generator-export"
+                                                data-export-accounts>Export accounts</button>
+                                        </div>
+                                    </div>
+                                    <div class="settings-part">
+                                        <p class="second-title" data-tasks-settings>Settings</p>
+                                        <hr>
+                                        <div class="settings-part-body">
+                                            <p class="settings-subtitle">Webhook</p>
+                                            <div class="switch-part">
+                                                <div class="switch-info" data-send-oneclick-success>Send OneClick
+                                                    success</div>
+                                                <label class="switch">
+                                                    <input type="checkbox" id="captcha-send-oc-webhook" />
+                                                    <span class="slider"></span>
+                                                </label>
+                                            </div>
+                                            <div class="switch-part">
+                                                <div class="switch-info" data-send-score-success>Send score success
+                                                </div>
+                                                <label class="switch">
+                                                    <input type="checkbox" id="captcha-send-score-webhook" />
+                                                    <span class="slider"></span>
+                                                </label>
+                                            </div>
+                                            <p class="settings-subtitle subtitle-margin-top">Running Time (minutes)</p>
+                                            <div class="switch-part">
+                                                <div class="switch-info" data-time-min>Min :</div>
+                                                <input type="number" class="global-input-2" id="captcha-run-time-min"
+                                                    placeholder="30" min="1" />
+                                            </div>
+                                            <div class="switch-part">
+                                                <div class="switch-info" data-time-max>Max :
+                                                </div>
+                                                <input type="number" class="global-input-2" id="captcha-run-time-max"
+                                                    placeholder="60" min="1" />
+                                            </div>
+                                            <p class="settings-subtitle subtitle-margin-top">Sleep Time (minutes)</p>
+                                            <div class="switch-part">
+                                                <div class="switch-info" data-time-min>Min :</div>
+                                                <input type="number" class="global-input-2" id="captcha-sleep-time-min"
+                                                    placeholder="100" min="1" />
+                                            </div>
+                                            <div class="switch-part">
+                                                <div class="switch-info" data-time-max>Max :
+                                                </div>
+                                                <input type="number" class="global-input-2" id="captcha-sleep-time-max"
+                                                    placeholder="180" min="1" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-tasks">
+                                <table id="captcha-tasks">
+                                    <thead>
+                                        <tr>
+                                            <th width="14%">Gmail</th>
+                                            <th width="14%" data-tasks-proxy>Proxy</th>
+                                            <th width="10%" data-tasks-login>Login</th>
+                                            <th width="9%" data-tasks-oneclick>OneClick</th>
+                                            <th width="9%" data-tasks-score>Score</th>
+                                            <th width="20%" data-tasks-status>Status</th>
+                                            <th width="20%" data-tasks-actions>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="custom-scrollbar">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--Profile Manager-->
+                <div class="tool-element profile-manager">
+                    <p class="title" data-profile-manager>Profile Manager</p>
+                    <div class="body">
+                        <div class="profile-buttons justify-content-between">
+                            <div class="left-btn align-items-center">
+                                <button class="global-button green" id="profile-manager-create" type="button"
+                                    data-create-profile data-toggle="modal"
+                                    data-target="#modalProfileManagerCreation">Create Profile</button>
+                                <button class="global-button yellow" id="profile-manager-import"
+                                    data-import>Import</button>
+                                <button class="global-button red" id="profile-manager-export" data-export-to
+                                    data-toggle="modal" data-target="#modalProfileManagerExport">Export
+                                    to</button>
+                            </div>
+                        </div>
+                        <div id="profileBody">
+                            <div class="profiles-display custom-scrollbar">
+                                <ul id="profileDisplay">
+                                    <!--DISPLAY ALL THE PROFILES-->
+                                </ul>
+                            </div>
+                            <div class="profile-edition" data-id="">
+                                <div class="profile-card-edition" id="display-card">
+                                    <div class="card-logo">
+                                        <img src="../assets/img/PS_Logo/Recurso_1.png">
+                                    </div>
+                                    <div class='profile-infos'>
+                                        <div class="profile-name">
+                                            <p id="display-profile-name-field" class="profile-name-field">
+                                                Prime_Solutions_Profile</p>
+                                        </div>
+                                        <div class="profile-display">
+                                            <div class="full-name">
+                                                <p class="full-name-title">Full name</p>
+                                                <p id="display-full-name-field" class="full-name-field">Prime
+                                                    Solutions
+                                                </p>
+                                            </div>
+                                            <div class="card-ending">
+                                                <p class="card-ending-title">Card Ending</p>
+                                                <p id="display-ending-field" class="card-ending-field">0000</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="profile-edition-parts">
+                                    <div class="button-div">
+                                        <button class="profile-edition-address profile-part-btn active">Address</button>
+                                    </div>
+                                    <div class="button-div">
+                                        <button class="profile-edition-payment profile-part-btn">Payment</button>
+                                    </div>
+                                    <div class="button-div">
+                                        <button class="profile-edition-settings profile-part-btn">Settings</button>
+                                    </div>
+                                </div>
+                                <div class="profile-edition-different-part">
+                                    <div class="address-part profile-edition-part">
+                                        <div class="profile-full-name profile-part-divided">
+                                            <div class="profile-first-name">
+                                                <p class="form-title">First Name<span class="required-star">*</span>
+                                                </p>
+                                                <input type="text" class="global-input" maxlength="50">
+                                            </div>
+                                            <div class="profile-last-name">
+                                                <p class="form-title">Last Name<span class="required-star">*</span>
+                                                </p>
+                                                <input type="text" class="global-input" maxlength="50">
+                                            </div>
+                                        </div>
+                                        <div class="profile-address profile-part">
+                                            <p class="form-title">Address<span class="required-star">*</span>
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="70">
+                                        </div>
+                                        <div class="profile-full-name profile-part-divided">
+                                            <div class="profile-address-2 profile-part">
+                                                <p class="form-title">Address 2
+                                                </p>
+                                                <input type="text" class="global-input" maxlength="50">
+                                            </div>
+                                            <div class="profile-zip-code profile-part">
+                                                <p class="form-title">ZIP Code<span class="required-star">*</span>
+                                                </p>
+                                                <input type="text" class="global-input" maxlength="10">
+                                            </div>
+                                        </div>
+                                        <div class="profile-city profile-part">
+                                            <p class="form-title">City<span class="required-star">*</span>
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="50">
+                                        </div>
+                                        <div class="profile-state-and-state-code profile-part-divided">
+                                            <div class="profile-state profile-part">
+                                                <p class="form-title">Province / State
+                                                </p>
+                                                <input type="text" class="global-input" maxlength="70">
+                                            </div>
+                                            <div class="profile-state-code profile-part">
+                                                <p class="form-title">(Province / State) ISO-2 Code
+                                                </p>
+                                                <input type="text" class="global-input" maxlength="3">
+                                            </div>
+                                        </div>
+                                        <div class="profile-country profile-part">
+                                            <p class="form-title">Country <span class="required-star">*</span>
+                                            </p>
+                                            <select type="text" class="global-input">
+                                                <option value="AF">Afghanistan</option>
+                                                <option value="AX">Åland Islands</option>
+                                                <option value="AL">Albania</option>
+                                                <option value="DZ">Algeria</option>
+                                                <option value="AS">American Samoa</option>
+                                                <option value="AD">Andorra</option>
+                                                <option value="AO">Angola</option>
+                                                <option value="AI">Anguilla</option>
+                                                <option value="AQ">Antarctica</option>
+                                                <option value="AG">Antigua and Barbuda</option>
+                                                <option value="AR">Argentina</option>
+                                                <option value="AM">Armenia</option>
+                                                <option value="AW">Aruba</option>
+                                                <option value="AU">Australia</option>
+                                                <option value="AT">Austria</option>
+                                                <option value="AZ">Azerbaijan</option>
+                                                <option value="BS">Bahamas</option>
+                                                <option value="BH">Bahrain</option>
+                                                <option value="BD">Bangladesh</option>
+                                                <option value="BB">Barbados</option>
+                                                <option value="BY">Belarus</option>
+                                                <option value="BE">Belgium</option>
+                                                <option value="BZ">Belize</option>
+                                                <option value="BJ">Benin</option>
+                                                <option value="BM">Bermuda</option>
+                                                <option value="BT">Bhutan</option>
+                                                <option value="BO">Bolivia, Plurinational State of</option>
+                                                <option value="BQ">Bonaire, Sint Eustatius and Saba</option>
+                                                <option value="BA">Bosnia and Herzegovina</option>
+                                                <option value="BW">Botswana</option>
+                                                <option value="BV">Bouvet Island</option>
+                                                <option value="BR">Brazil</option>
+                                                <option value="IO">British Indian Ocean Territory</option>
+                                                <option value="BN">Brunei Darussalam</option>
+                                                <option value="BG">Bulgaria</option>
+                                                <option value="BF">Burkina Faso</option>
+                                                <option value="BI">Burundi</option>
+                                                <option value="KH">Cambodia</option>
+                                                <option value="CM">Cameroon</option>
+                                                <option value="CA">Canada</option>
+                                                <option value="CV">Cape Verde</option>
+                                                <option value="KY">Cayman Islands</option>
+                                                <option value="CF">Central African Republic</option>
+                                                <option value="TD">Chad</option>
+                                                <option value="CL">Chile</option>
+                                                <option value="CN">China</option>
+                                                <option value="CX">Christmas Island</option>
+                                                <option value="CC">Cocos (Keeling) Islands</option>
+                                                <option value="CO">Colombia</option>
+                                                <option value="KM">Comoros</option>
+                                                <option value="CG">Congo</option>
+                                                <option value="CD">Congo, the Democratic Republic of the</option>
+                                                <option value="CK">Cook Islands</option>
+                                                <option value="CR">Costa Rica</option>
+                                                <option value="CI">Côte d'Ivoire</option>
+                                                <option value="HR">Croatia</option>
+                                                <option value="CU">Cuba</option>
+                                                <option value="CW">Curaçao</option>
+                                                <option value="CY">Cyprus</option>
+                                                <option value="CZ">Czech Republic</option>
+                                                <option value="DK">Denmark</option>
+                                                <option value="DJ">Djibouti</option>
+                                                <option value="DM">Dominica</option>
+                                                <option value="DO">Dominican Republic</option>
+                                                <option value="EC">Ecuador</option>
+                                                <option value="EG">Egypt</option>
+                                                <option value="SV">El Salvador</option>
+                                                <option value="GQ">Equatorial Guinea</option>
+                                                <option value="ER">Eritrea</option>
+                                                <option value="EE">Estonia</option>
+                                                <option value="ET">Ethiopia</option>
+                                                <option value="FK">Falkland Islands (Malvinas)</option>
+                                                <option value="FO">Faroe Islands</option>
+                                                <option value="FJ">Fiji</option>
+                                                <option value="FI">Finland</option>
+                                                <option value="FR">France</option>
+                                                <option value="GF">French Guiana</option>
+                                                <option value="PF">French Polynesia</option>
+                                                <option value="TF">French Southern Territories</option>
+                                                <option value="GA">Gabon</option>
+                                                <option value="GM">Gambia</option>
+                                                <option value="GE">Georgia</option>
+                                                <option value="DE">Germany</option>
+                                                <option value="GH">Ghana</option>
+                                                <option value="GI">Gibraltar</option>
+                                                <option value="GR">Greece</option>
+                                                <option value="GL">Greenland</option>
+                                                <option value="GD">Grenada</option>
+                                                <option value="GP">Guadeloupe</option>
+                                                <option value="GU">Guam</option>
+                                                <option value="GT">Guatemala</option>
+                                                <option value="GG">Guernsey</option>
+                                                <option value="GN">Guinea</option>
+                                                <option value="GW">Guinea-Bissau</option>
+                                                <option value="GY">Guyana</option>
+                                                <option value="HT">Haiti</option>
+                                                <option value="HM">Heard Island and McDonald Islands</option>
+                                                <option value="VA">Holy See (Vatican City State)</option>
+                                                <option value="HN">Honduras</option>
+                                                <option value="HK">Hong Kong</option>
+                                                <option value="HU">Hungary</option>
+                                                <option value="IS">Iceland</option>
+                                                <option value="IN">India</option>
+                                                <option value="ID">Indonesia</option>
+                                                <option value="IR">Iran, Islamic Republic of</option>
+                                                <option value="IQ">Iraq</option>
+                                                <option value="IE">Ireland</option>
+                                                <option value="IM">Isle of Man</option>
+                                                <option value="IL">Israel</option>
+                                                <option value="IT">Italy</option>
+                                                <option value="JM">Jamaica</option>
+                                                <option value="JP">Japan</option>
+                                                <option value="JE">Jersey</option>
+                                                <option value="JO">Jordan</option>
+                                                <option value="KZ">Kazakhstan</option>
+                                                <option value="KE">Kenya</option>
+                                                <option value="KI">Kiribati</option>
+                                                <option value="KP">Korea, Democratic People's Republic of</option>
+                                                <option value="KR">Korea, Republic of</option>
+                                                <option value="KW">Kuwait</option>
+                                                <option value="KG">Kyrgyzstan</option>
+                                                <option value="LA">Lao People's Democratic Republic</option>
+                                                <option value="LV">Latvia</option>
+                                                <option value="LB">Lebanon</option>
+                                                <option value="LS">Lesotho</option>
+                                                <option value="LR">Liberia</option>
+                                                <option value="LY">Libya</option>
+                                                <option value="LI">Liechtenstein</option>
+                                                <option value="LT">Lithuania</option>
+                                                <option value="LU">Luxembourg</option>
+                                                <option value="MO">Macao</option>
+                                                <option value="MK">Macedonia, the former Yugoslav Republic of
+                                                </option>
+                                                <option value="MG">Madagascar</option>
+                                                <option value="MW">Malawi</option>
+                                                <option value="MY">Malaysia</option>
+                                                <option value="MV">Maldives</option>
+                                                <option value="ML">Mali</option>
+                                                <option value="MT">Malta</option>
+                                                <option value="MH">Marshall Islands</option>
+                                                <option value="MQ">Martinique</option>
+                                                <option value="MR">Mauritania</option>
+                                                <option value="MU">Mauritius</option>
+                                                <option value="YT">Mayotte</option>
+                                                <option value="MX">Mexico</option>
+                                                <option value="FM">Micronesia, Federated States of</option>
+                                                <option value="MD">Moldova, Republic of</option>
+                                                <option value="MC">Monaco</option>
+                                                <option value="MN">Mongolia</option>
+                                                <option value="ME">Montenegro</option>
+                                                <option value="MS">Montserrat</option>
+                                                <option value="MA">Morocco</option>
+                                                <option value="MZ">Mozambique</option>
+                                                <option value="MM">Myanmar</option>
+                                                <option value="NA">Namibia</option>
+                                                <option value="NR">Nauru</option>
+                                                <option value="NP">Nepal</option>
+                                                <option value="NL">Netherlands</option>
+                                                <option value="NC">New Caledonia</option>
+                                                <option value="NZ">New Zealand</option>
+                                                <option value="NI">Nicaragua</option>
+                                                <option value="NE">Niger</option>
+                                                <option value="NG">Nigeria</option>
+                                                <option value="NU">Niue</option>
+                                                <option value="NF">Norfolk Island</option>
+                                                <option value="MP">Northern Mariana Islands</option>
+                                                <option value="NO">Norway</option>
+                                                <option value="OM">Oman</option>
+                                                <option value="PK">Pakistan</option>
+                                                <option value="PW">Palau</option>
+                                                <option value="PS">Palestinian Territory, Occupied</option>
+                                                <option value="PA">Panama</option>
+                                                <option value="PG">Papua New Guinea</option>
+                                                <option value="PY">Paraguay</option>
+                                                <option value="PE">Peru</option>
+                                                <option value="PH">Philippines</option>
+                                                <option value="PN">Pitcairn</option>
+                                                <option value="PL">Poland</option>
+                                                <option value="PT">Portugal</option>
+                                                <option value="PR">Puerto Rico</option>
+                                                <option value="QA">Qatar</option>
+                                                <option value="RE">Réunion</option>
+                                                <option value="RO">Romania</option>
+                                                <option value="RU">Russian Federation</option>
+                                                <option value="RW">Rwanda</option>
+                                                <option value="BL">Saint Barthélemy</option>
+                                                <option value="SH">Saint Helena, Ascension and Tristan da Cunha
+                                                </option>
+                                                <option value="KN">Saint Kitts and Nevis</option>
+                                                <option value="LC">Saint Lucia</option>
+                                                <option value="MF">Saint Martin (French part)</option>
+                                                <option value="PM">Saint Pierre and Miquelon</option>
+                                                <option value="VC">Saint Vincent and the Grenadines</option>
+                                                <option value="WS">Samoa</option>
+                                                <option value="SM">San Marino</option>
+                                                <option value="ST">Sao Tome and Principe</option>
+                                                <option value="SA">Saudi Arabia</option>
+                                                <option value="SN">Senegal</option>
+                                                <option value="RS">Serbia</option>
+                                                <option value="SC">Seychelles</option>
+                                                <option value="SL">Sierra Leone</option>
+                                                <option value="SG">Singapore</option>
+                                                <option value="SX">Sint Maarten (Dutch part)</option>
+                                                <option value="SK">Slovakia</option>
+                                                <option value="SI">Slovenia</option>
+                                                <option value="SB">Solomon Islands</option>
+                                                <option value="SO">Somalia</option>
+                                                <option value="ZA">South Africa</option>
+                                                <option value="GS">South Georgia and the South Sandwich Islands
+                                                </option>
+                                                <option value="SS">South Sudan</option>
+                                                <option value="ES">Spain</option>
+                                                <option value="LK">Sri Lanka</option>
+                                                <option value="SD">Sudan</option>
+                                                <option value="SR">Suriname</option>
+                                                <option value="SJ">Svalbard and Jan Mayen</option>
+                                                <option value="SZ">Swaziland</option>
+                                                <option value="SE">Sweden</option>
+                                                <option value="CH">Switzerland</option>
+                                                <option value="SY">Syrian Arab Republic</option>
+                                                <option value="TW">Taiwan, Province of China</option>
+                                                <option value="TJ">Tajikistan</option>
+                                                <option value="TZ">Tanzania, United Republic of</option>
+                                                <option value="TH">Thailand</option>
+                                                <option value="TL">Timor-Leste</option>
+                                                <option value="TG">Togo</option>
+                                                <option value="TK">Tokelau</option>
+                                                <option value="TO">Tonga</option>
+                                                <option value="TT">Trinidad and Tobago</option>
+                                                <option value="TN">Tunisia</option>
+                                                <option value="TR">Turkey</option>
+                                                <option value="TM">Turkmenistan</option>
+                                                <option value="TC">Turks and Caicos Islands</option>
+                                                <option value="TV">Tuvalu</option>
+                                                <option value="UG">Uganda</option>
+                                                <option value="UA">Ukraine</option>
+                                                <option value="AE">United Arab Emirates</option>
+                                                <option value="GB">United Kingdom</option>
+                                                <option value="US">United States</option>
+                                                <option value="UM">United States Minor Outlying Islands</option>
+                                                <option value="UY">Uruguay</option>
+                                                <option value="UZ">Uzbekistan</option>
+                                                <option value="VU">Vanuatu</option>
+                                                <option value="VE">Venezuela, Bolivarian Republic of</option>
+                                                <option value="VN">Viet Nam</option>
+                                                <option value="VG">Virgin Islands, British</option>
+                                                <option value="VI">Virgin Islands, U.S.</option>
+                                                <option value="WF">Wallis and Futuna</option>
+                                                <option value="EH">Western Sahara</option>
+                                                <option value="YE">Yemen</option>
+                                                <option value="ZM">Zambia</option>
+                                                <option value="ZW">Zimbabwe</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="payment-part profile-edition-part" style="display: none;">
+                                        <div class="profile-email profile-part">
+                                            <p class="form-title">Email<span class="required-star">*</span>
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="70">
+                                        </div>
+                                        <div class="profile-telephone profile-part">
+                                            <p class="form-title">Telephone<span class="required-star">*</span>
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="15">
+                                        </div>
+                                        <div class="profile-card-holder profile-part">
+                                            <p class="form-title">Card Holder<span class="required-star">*</span>
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="70">
+                                        </div>
+                                        <div class="profile-card-number profile-part">
+                                            <p class="form-title">Card Number<span class="required-star">*</span>
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="16">
+                                        </div>
+                                        <div class="profile-card-expiry profile-part-divided">
+                                            <div class="profile-card-expiry-month">
+                                                <p class="form-title">Exp. Month<span class="required-star">*</span>
+                                                </p>
+                                                <select class="global-input">
+                                                    <option value="-1">/</option>
+                                                    <option value="01">1</option>
+                                                    <option value="02">2</option>
+                                                    <option value="03">3</option>
+                                                    <option value="04">4</option>
+                                                    <option value="05">5</option>
+                                                    <option value="06">6</option>
+                                                    <option value="07">7</option>
+                                                    <option value="08">8</option>
+                                                    <option value="09">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                </select>
+                                            </div>
+                                            <div class="profile-card-expiry-year">
+                                                <p class="form-title">Expt. Year<span class="required-star">*</span>
+                                                </p>
+                                                <select class="global-input">
+                                                    <option value="-1">/</option>
+                                                    <option value="2020">2020</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2022">2022</option>
+                                                    <option value="2023">2023</option>
+                                                    <option value="2024">2024</option>
+                                                    <option value="2025">2025</option>
+                                                    <option value="2026">2026</option>
+                                                    <option value="2027">2027</option>
+                                                    <option value="2028">2028</option>
+                                                    <option value="2029">2029</option>
+                                                    <option value="2030">2030</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="profile-card-cvv profile-part">
+                                            <p class="form-title">CVV<span class="required-star">*</span>
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="4">
+                                        </div>
+                                    </div>
+                                    <div class="settings-part profile-edition-part" style="display: none;">
+                                        <div class="profile-paypal-email profile-part">
+                                            <p class="form-title">Paypal Email
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="70">
+                                        </div>
+                                        <div class="profile-paypal-password profile-part">
+                                            <p class="form-title">Paypal Password
+                                            </p>
+                                            <input type="text" class="global-input" maxlength="70">
+                                        </div>
+                                        <div class="profile-checkout-limit profile-part">
+                                            <p class="form-title">Checkout Limit<span class="required-star">*</span>
+                                            </p>
+                                            <input type="number" class="global-input" min=0 max=1000>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="profile-buttons">
+                                    <div class="btn-section">
+                                        <button id="profileManagerSave" class="global-button green">Save
+                                            Profile</button>
+                                    </div>
+                                    <div class="btn-section">
+                                        <button id="profileManageDelete" class="global-button red">Delete
+                                            Profile</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--DISCORD TOOLS-->
+                <div class="tool-element discord-tools">
+                    <p class="title discord-tools-title" data-discord-tools-title>Discord Tools</p>
+                    <div class="body">
+                        <div class="discordSettings justify-content-between">
+                            <div class="left-btn align-items-center">
+                                <button class="global-button" id="discord-login" type="button" data-discord-login>
+                                    Discord
+                                    Login
+                                </button>
+                                <button class="global-button" id="discord-logout" type="button" data-discord-logout>
+                                    Discord Logout
+                                </button>
+                                <button class="global-button" id="discord-turn-on" type="button" data-turn-on>
+                                    Turn
+                                    On
+                                </button>
+                                <button class="global-button" id="discord-turn-off" type="button" data-turn-off>
+                                    Turn
+                                    Off
+                                </button>
+                                <p id="discord-status" data-tasks-status>Status :<span class="error">OFF</span>
+                                </p>
+                                <p id="discord-login-display" data-discord-currently-logged>Currently logged in
+                                    as :
+                                    <span class="error">NONE</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div id="discordToolsBody" class="discordBody">
+                            <div class="body-part channels-part">
+                                <p class="subtitle" data-discord-channels>Channel(s)</p>
+                                <hr>
+                                <div class="input-add-div">
+                                    <input placeholder="Insert your id" class="global-input input-add"
+                                        id="channelIdInput">
+                                    <button class="global-button button-add" id="discord-add-channel-id"
+                                        data-discord-add-id>Add Id
+                                    </button>
+                                </div>
+                                <div class="body-display custom-scrollbar" id="discord-channelids">
+                                </div>
+                            </div>
+                            <div class="body-part keywords-part scnd">
+                                <p class="subtitle" data-discord-keywords>Keyword(s)</p>
+                                <hr>
+                                <div class="input-add-div">
+                                    <input placeholder="Insert your keyword" class="global-input input-add"
+                                        id="keywordInput">
+                                    <button class="global-button button-add" id="discord-add-keyword"
+                                        data-discord-add-kw>Add KW
+                                    </button>
+                                </div>
+                                <div class="body-display custom-scrollbar" id="discord-keywords">
+                                </div>
+                            </div>
+                            <div class="body-part control-panel-part scnd">
+                                <p class="subtitle" data-discord-control-panel>Control panel</p>
+                                <hr>
+                                <div class="body-display">
+                                    <div class="switch-element">
+                                        <p class="elt-desc" data-control-enable-autoclicker>Enable Autoclicker
+                                        </p>
+                                        <label class="switch">
+                                            <input type="checkbox" id="discord-enable-autoclicker" />
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <hr class="separate-line" />
+                                    <div class="switch-element">
+                                        <p class="elt-desc" data-control-enable-nitrosniper>Enable Nitrosniper
+                                        </p>
+                                        <label class="switch">
+                                            <input type="checkbox" id="discord-enable-nitrosniper" />
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <hr class="separate-line" />
+                                    <div class="switch-element">
+                                        <p class="elt-desc" data-control-enable-autojoiner>Enable Autojoiner</p>
+                                        <label class="switch">
+                                            <input type="checkbox" id="discord-enable-autojoiner" />
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <hr class="separate-line" />
+                                    <div class="switch-element">
+                                        <p class="elt-desc" data-control-ignore-message>Ignore messages sent by
+                                            yourself
+                                        </p>
+                                        <label class="switch">
+                                            <input type="checkbox" id="discord-ignore-message" />
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <hr class="separate-line" />
+                                    <div class="switch-element">
+                                        <p class="elt-desc" data-send-success-webhook>Send success via Webhook
+                                        </p>
+                                        <label class="switch">
+                                            <input type="checkbox" id="discord-send-success-webhook" />
+                                            <span class="slider"></span>
+                                        </label>
+                                    </div>
+                                    <hr class="separate-line" />
+                                    <div class="switch-element">
+                                        <div class="switch-info" data-discord-delay>Autojoiner / Nitrosniper
+                                            Delay</div>
+                                        <input type="text" class="global-input-2" id="discord-delay" placeholder="0" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tool-element account-generator">
+                    <p class="title account-generator-title" data-account-generator-title>Account Generator</p>
+                    <div class="body">
+                        <div class="accountSettings justify-content-between">
+                            <div class="left-btn align-items-center">
+                                <button class="global-button" id="account-generator-createTasks" type="button"
+                                    data-toggle="modal" data-target="#modalAccountGenTaskCreation" data-task-create>
+                                    Create task
+                                </button>
+                                <button class="global-button" id="account-generator-startAll" data-tasks-start-all>Start
+                                    all</button>
+                                <button class="global-button" id="account-generator-stopAll" data-tasks-stop-all>Stop
+                                    all</button>
+                                <button class="global-button blue" id="account-generator-captcha">Captcha</button>
+                                <button class="global-button grey" id="account-generator-export"
+                                    data-export-accounts>Export accounts</button>
+                                <button class="global-button grey" id="account-generator-2captcha-settings"
+                                    data-2captcha-settings data-toggle="modal"
+                                    data-target="#modalAccountGen2Captcha">2Captcha Settings</button>
+                            </div>
+                            <div class="tasks-infos">
+                                <div class="tasks-number">
+                                    <div class="number" id="tasksNumberAccGen">0</div>
+                                    <p data-tasks>task(s)</p>
+                                </div>
+                                <div class="tasks-passed">
+                                    <div class="number">0</div>
+                                    <p data-tasks-created>created</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="accountGenBody" class="accountBody">
+                            <div class="table-tasks">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th data-website>Website</th>
+                                            <th data-email>E-mail</th>
+                                            <th data-tasks-proxy="">Proxy</th>
+                                            <th data-tasks-status="">Status</th>
+                                            <th data-tasks-actions="">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="accGenTbody" class="custom-scrollbar">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tool-element proxies">
+                    <p class="title" data-proxies-title>Proxies</p>
+                    <div class="body">
+                        <div class="proxiesSettings justify-content-between">
+                            <div class="proxies-list">
+                                <span class="select-list" data-proxies-select>Select list : </span>
+                                <select id="proxies-list" class="global-input proxyList" data-localhost="1">
+                                    <option disabled></option>
+                                </select>
+                                <button class="global-button" id="proxies-createList" type="button" data-toggle="modal"
+                                    data-target="#modalAddProxyList" data-proxies-list-creation>Create new
+                                    list</button>
+                            </div>
+                            <div class="proxies-test">
+                                <input type="text" id="website-testing" class="website-testing global-input"
+                                    placeholder="https://google.com" maxlength="50" />
+                                <button class="global-button" id="proxies-test" onclick="testProxies()"
+                                    data-test-proxies>Test
+                                    proxies</button>
+                            </div>
+                        </div>
+                        <div class="table-tasks">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>IP</th>
+                                        <th data-tasks-port>Port</th>
+                                        <th data-tasks-username>Username</th>
+                                        <th data-tasks-password>Password</th>
+                                        <th data-tasks-status>Status</th>
+                                        <th data-tasks-action>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="proxies-tbody" class="custom-scrollbar">
+                                </tbody>
+                            </table>
+                            <div class="table-settings">
+                                <button class="global-button delete-list" onclick="deleteProxylist()"
+                                    data-proxies-list-delete>Delete
+                                    list</button>
+                                <button class="global-button add-proxies" data-toggle="modal"
+                                    data-target="#modalAddProxies">Add proxies</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tool-element supreme-signup">
+                    <p class="title supreme-signup-title" data-supreme-signup-title>Supreme Signup</p>
+                    <div class="body">
+                        <div class="supremeSettings justify-content-between">
+                            <div class="left-btn align-items-center">
+                                <button class="global-button" id="supreme-signup-createTasks" type="button"
+                                    data-toggle="modal" data-target="#modalSupremeSignupTaskCreation" data-task-create>
+                                    Create task
+                                </button>
+                                <button class="global-button" id="supreme-signup-startAll" data-tasks-start-all>Start
+                                    all</button>
+                                <button class="global-button" id="supreme-signup-stopAll" data-tasks-stop-all>Stop
+                                    all</button>
+                                <button class="global-button" id="supreme-signup-deleteAll" data-tasks-delete-all>Delete
+                                    all</button>
+                                <!--
+                                <button class="global-button" id="supreme-signup-profiles"
+                                    data-tasks-profile>Profiles</button>-->
+                            </div>
+                            <div class="tasks-infos">
+                                <div class="tasks-number">
+                                    <div class="number" id="tasksNumberSupreme">0</div>
+                                    <p data-tasks>task(s)</p>
+                                </div>
+                                <div class="tasks-success">
+                                    <div class="number">0</div>
+                                    <p data-tasks-success>success</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="supremeSignupBody" class="supremeBody">
+                            <div class="table-tasks">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th data-id>Id</th>
+                                            <th data-store>Store</th>
+                                            <th data-profile>Profile</th>
+                                            <th data-gmail>Gmail</th>
+                                            <th data-tasks-proxy>Proxy</th>
+                                            <th data-tasks-status>Status</th>
+                                            <th data-tasks-actions>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="supremeTbody" class="custom-scrollbar">
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!--
+                            <div class="profiles">
+                                <p class="second-title" data-tasks-profile>Profiles</p>
+                                <hr>
+                                <div class="supreme-profile-tab">
+                                    <table id="supreme-profiles">
+                                        <thead>
+                                            <tr>
+                                                <th data-profile-name>Profile Name</th>
+                                                <th data-tasks-actions>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="supremePbody" class="custom-scrollbar">
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="supreme-buttons">
+                                    <button type="button" class="add-profile global-button blue" data-toggle="modal"
+                                        data-target="#modalSupremeSignupProfileCreation" data-add-new-profile>Add a
+                                        new
+                                        Profile</button>
+                                    <button class="global-button red" id="signup-profile-delete-all"
+                                        data-tasks-delete-all>Delete
+                                        All</button>
+                                </div>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="disclaimer" style="display: none;">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <p class="modal-title">Disclaimer</p>
+                            <div class="modal-form">
+                                <div class="form-text justify-content-between">
+                                    <p>Our Discord tools can get your discord account banned permanently as they
+                                        violate
+                                        the discord TOS.</p>
+                                    <p>You must be aware of the risks of using our Discord tools and that in no
+                                        case
+                                        PrimeSolutions and its associates can be considered responsible of any
+                                        problems.
+                                        If you don't want to take any risks don't use them otherwise you should
+                                        be aware
+                                        of the risks.</p>
+                                    <p>By clicking on "I agree and accept" you accept the terms cited.</p>
+                                </div>
+                                <div class="form-button">
+                                    <button class="global-button green" onclick="acceptDisclaimer()">I agree and
+                                        accept
+                                    </button>
+                                    <button class="global-button red" onclick="dismissDisclaimer()">I don't
+                                        accept</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 
+
+
+
+
+
+
+            ALL APP MODALS
+
+
+
+
+
+        -->
+
+        <!-- INFOS MODAL -->
+        <div id="modalInformation" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" id="modalInformationTitle"></p>
+                        <div class="modal-form">
+                            <div class="form-infos justify-content-between">
+                                <p id="modalInformationText" type="text"></p>
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button id="modalInformationBtn" data-dismiss="modal"></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Modals for profile manager-->
+        <!--Profile creation-->
+        <div id="modalProfileManagerCreation" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-new-profile>New Profile</p>
+                        <div class="modal-form">
+                            <div class="form-profile-name justify-content-between">
+                                <p class="form-title" data-profile-name>Profile Name</p>
+                                <input id="profile-manager-profile-name" type="text" class="global-input"
+                                    placeholder="(must be unique)" maxlength="70">
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button class="global-button green" id="createNewProfile" data-create-new-profile
+                                    data-dismiss="modal">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Choose the bot where they import the profile from-->
+        <div id="modalProfileManagerImportSelection" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title">Choose the Import type</p>
+                        <div class="modal-form">
+                            <div class="form-import-type form justify-content-between">
+                                <p class="form-title">Import type</p>
+                                <select id="profile-manager-import-type" class="global-input">
+                                    <option value="AIOMoji">AIOMoji</option>
+                                    <option value="ArcAIO">ArcAIO</option>
+                                    <option value="Balko">Balko</option>
+                                    <option value="Cybersole">Cybersole</option>
+                                    <option value="ECB">Easy Cop Bot</option>
+                                    <option value="F3ather">F3ather</option>
+                                    <option value="FlareAIO">FlareAIO</option>
+                                    <option value="FleekFramework">FleekFramework</option>
+                                    <option value="Ganesh">Ganesh</option>
+                                    <option value="Hawk">HawkMesh</option>
+                                    <option value="Kodai">Kodai</option>
+                                    <option value="Kylin">KylinBot</option>
+                                    <option value="MangoPreme">MangoHybrid</option>
+                                    <option value="Mek">MekPreme</option>
+                                    <option value="Nova">Nova</option>
+                                    <option value="NSB">Nike Shoe Bot</option>
+                                    <option value="Phantom">Phantom</option>
+                                    <option value="Phasma">PhasmaIO</option>
+                                    <option value="Prism">Prism</option>
+                                    <option value="Polaris">Polaris</option>
+                                    <option value="Project Destroyer">Project Destroyer</option>
+                                    <option value="QBot">QBot</option>
+                                    <option value="SplashForce">SplashForce</option>
+                                    <option value="TKS">The Kick Station</option>
+                                    <option value="TSB">The Shit Bot</option>
+                                    <option value="Tohru">Tohru</option>
+                                    <option value="ZephyrAIO">ZephyrAIO</option>
+                                </select>
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button class="global-button green" id="importSelectionType"
+                                    data-dismiss="modal">Confirm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Choose the bot where they import the profile from-->
+        <div id="modalProfileManagerExport" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title">Choose the Export Type</p>
+                        <div class="modal-form">
+                            <div class="form-export-type form justify-content-between">
+                                <p class="form-title">Export type</p>
+                                <select id="profile-manager-export-type-select" class="global-input">
+                                    <option value="AIOMoji">AIOMoji</option>
+                                    <option value="ArcAIO">ArcAIO</option>
+                                    <option value="Balko">Balko</option>
+                                    <option value="Cybersole">Cybersole</option>
+                                    <option value="ECB">Easy Cop Bot</option>
+                                    <option value="F3ather">F3ather</option>
+                                    <option value="FlareAIO">FlareAIO</option>
+                                    <option value="FleekFramework">FleekFramework</option>
+                                    <option value="Ganesh">Ganesh</option>
+                                    <option value="Hawk">HawkMesh</option>
+                                    <option value="Kodai">Kodai</option>
+                                    <option value="Kylin">KylinBot</option>
+                                    <option value="MangoPreme">MangoHybrid</option>
+                                    <option value="Mek">MekPreme</option>
+                                    <option value="Nova">Nova</option>
+                                    <option value="NSB">Nike Shoe Bot</option>
+                                    <option value="Phantom">Phantom</option>
+                                    <option value="Phasma">PhasmaIO</option>
+                                    <option value="Prism">Prism</option>
+                                    <option value="Polaris">Polaris</option>
+                                    <option value="Project Destroyer">Project Destroyer</option>
+                                    <option value="QBot">QBot</option>
+                                    <option value="SplashForce">SplashForce</option>
+                                    <option value="TKS">The Kick Station</option>
+                                    <option value="TSB">The Shit Bot</option>
+                                    <option value="Tohru">Tohru</option>
+                                    <option value="ZephyrAIO">ZephyrAIO</option>
+                                </select>
+                            </div>
+                            <div class="form-export-type-profile form justify-content-between">
+                                <p class="form-title">Profile(s)</p>
+                                <select id="profile-manager-export-profile-select"
+                                    class="global-input global-profile-select" multiple>
+                                </select>
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button class="global-button green" id="exportSelectionType"
+                                    data-dismiss="modal">Export</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modals for browser spoofer -->
+        <!--tasks creation-->
+        <div id="modalBrowserTaskCreation" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-tasks-creation>Create Task(s)</p>
+                        <div class="modal-form">
+                            <div class="form-url form justify-content-between">
+                                <p class="form-title">URL</p>
+                                <input type="text" class="global-input" id="browser-url">
+                            </div>
+                            <div class="form-proxy form justify-content-between">
+                                <p class="form-title" data-proxy-list>Proxy list</p>
+                                <select class="global-input proxyList" id="browser-proxylist"></select>
+                            </div>
+                            <div class="form-gmail form justify-content-between">
+                                <p class="form-title" data-gmail>Gmail</p>
+                                <select class="global-input" id="browser-gmail"></select>
+                            </div>
+                            <div class="form-nike-account form justify-content-between">
+                                <p class="form-title" data-nike-account>Nike account</p>
+                                <select class="global-input" id="browser-nike-account">
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
+                            <!-- <div class="form-nike-browser form justify-content-between">
+                                <p class="form-title">Use Nike-optimized browser</p>
+                                <label class="switch">
+                                    <input type="checkbox" id="browser-nike-browser" />
+                                    <span class="slider"></span>
+                                </label>
+                            </div> -->
+                            <div class="form-autofill form justify-content-between" style="display: none;">
+                                <p class="form-title" data-autofill>Autofill profile</p>
+                                <select class="global-input" id="browser-profile"></select>
+                            </div>
+                            <div class="form-enable-autofill form justify-content-between" style="display: none;">
+                                <p class="form-title" data-enable-autofill>Enable Autofill</p>
+                                <label class="switch">
+                                    <input type="checkbox" id="browser-autofill" />
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-enable-queue-release form justify-content-between">
+                                <p class="form-title" data-enable-queue-release>Queue release ?</p>
+                                <label class="switch">
+                                    <input type="checkbox" id="browser-enable-queue-release" />
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="justify-content-between">
+                                <div class="form-amount form">
+                                    <p class="form-title" data-tasks-amount>Amount : </p>
+                                    <input id="browser-qty" type="number" class="global-input" value="1" min="1"
+                                        max="50">
+                                </div>
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button id="modalBrowserTaskCreation-button" class="global-button createTaskBtn green"
+                                    data-tasktype="browser" data-tasks-creation data-dismiss="modal">Create
+                                    Task(s)</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Mass URL Change-->
+        <div id="modalBrowserMassUrlChange" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-tasks-change-url>Change Task(s) URL</p>
+                        <div class="modal-form">
+                            <div class="form-url form justify-content-between">
+                                <p class="form-title">New URL</p>
+                                <input type="text" class="global-input" id="browser-url-mass-change" maxlength="200">
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button id="modalBrowserTaskUrlEdition" class="global-button yellow"
+                                    data-tasktype="browser" data-tasks-edit-url data-dismiss="modal">Edit
+                                    Task(s) URL</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Manage Nike Accounts-->
+        <div id="modalBrowserNikeAccounts" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-manage-nike-accounts>Manage Nike accounts</p>
+                        <div class="modal-form">
+                            <div class="form-nike-accounts justify-content-between">
+                                <textarea id="browserModifyNikeAccounts-field" type="text" class="global-textarea"
+                                    placeholder="email:password" rows="10" cols="500"></textarea>
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button id="browserModifyNikeAccounts-btn" class="global-button green"
+                                    data-tasktype="captcha" data-save-accounts data-dismiss="modal">Save
+                                    Accounts</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals for proxy list-->
+        <!--ProxyList creation-->
+        <div id="modalAddProxyList" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-proxies-list-title-modal-add-list>Add a new Proxylist</p>
+                        <div class="modal-form">
+                            <div class="form-listName justify-content-between">
+                                <p class="form-title" data-proxies-list-name>List name</p>
+                                <input id="proxyListName" type="text" class="global-input" maxlength="25" />
+                            </div>
+                            <div class="form-button">
+                                <button onclick="addProxyList()" id="modalAddProxyList-button" class="global-button"
+                                    data-proxies-list-modal-creation data-dismiss="modal">Create
+                                    List</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Add proxies-->
+        <div id="modalAddProxies" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-proxies-list-title-modal>Add Proxies</p>
+                        <div class="modal-form">
+                            <div class="form-proxies justify-content-between">
+                                <textarea id="proxies-textarea" type="text" class="global-textarea"
+                                    placeholder="192.168.1.1:80:username:password" rows="10" cols="50"></textarea>
+                            </div>
+                            <div class="form-button">
+                                <button onclick="addProxies()" id="modalAddProxyList-button" class="global-button"
+                                    data-proxies-list-title-modal data-dismiss="modal">Add
+                                    Proxies</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Account generator-->
+        <!--Create tasks-->
+        <div id="modalAccountGenTaskCreation" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-task-create>Create Task</p>
+                        <div class="modal-form">
+                            <div class="form-store justify-content-between">
+                                <p class="form-title" data-store-selection>Select store</p>
+                                <select class="global-input" id="accountGen-store">
+                                    <option value="custom">Custom</option>
+                                    <option value="undefeated.com">Undefeated</option>
+                                    <option value="extrabutterny.com">ExtraButter</option>
+                                    <option value="deadstock.ca">Deadstock</option>
+                                </select>
+                            </div>
+                            <div class="form-email justify-content-between">
+                                <p class="form-title" data-store-url>Store URL</p>
+                                <input id="accountGen-storeUrl" type="text" class="global-input"
+                                    placeholder="https://example.com" maxlength="70">
+                            </div>
+                            <div class="form-email justify-content-between">
+                                <p class="form-title">Catchall/Gmail</p>
+                                <input id="accountGen-email" type="text" class="global-input" maxlength="50">
+                            </div>
+                            <div class="form-jig-email justify-content-between">
+                                <p class="form-title" data-jig-email-catchall>Jig Gmail</p>
+                                <label class="switch">
+                                    <input type="checkbox" id="accountGen-jigg-email" checked />
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-proxy justify-content-between">
+                                <p class="form-title" data-proxy-list>Proxy list</p>
+                                <select class="global-input proxyList" id="accountGen-proxy"></select>
+                            </div>
+                            <div class="form-email justify-content-between">
+                                <p class="form-title" data-tasks-quantity>Task(s) quantity</p>
+                                <input id="accountGen-qty" type="number" class="global-input" value="1" min="1"
+                                    max="50">
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button id="modalAccountGenTaskCreation-button"
+                                    class="global-button createTaskBtn green" data-tasktype="account" data-task-create
+                                    data-dismiss="modal">Create Task</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--2captcha settings-->
+        <div id="modalAccountGen2Captcha" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-2captcha-settings>2Captcha Settings</p>
+                        <div class="modal-form">
+                            <div class="form-api justify-content-between">
+                                <p class="form-title" data-api-key>API Key</p>
+                                <input id="accountGen-2captcha-key" type="text" class="global-input"
+                                    placeholder="API_KEY" maxlength="70">
+                            </div>
+                            <div class="form-enable-api justify-content-between">
+                                <p class="form-title" data-enable-api-key>Enable 2captcha on tasks</p>
+                                <label class="switch">
+                                    <input type="checkbox" id="enable2CaptchaSettings" />
+                                    <span class="slider"></span>
+                                </label>
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button class="global-button red" data-tasktype="account" data-close
+                                    data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!--Captcha generator-->
+        <!--Create tasks-->
+        <div id="modalCaptchaGenTaskCreation" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-tasks-creation>Create Task(s)</p>
+                        <div class="modal-form">
+                            <div class="form-proxy justify-content-between">
+                                <p class="form-title" data-gmail>Gmail</p>
+                                <select class="global-input" id="captchaGen-gmail">
+                                    <option value="all">One task per gmail</option>
+                                </select>
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button id="createCaptchaTask" class="global-button createTaskBtn"
+                                    data-tasktype="captcha" data-task-create data-dismiss="modal">Create
+                                    Task</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalCaptchaAddGmail" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title">Add Gmail Account</p>
+                        <div class="modal-form">
+                            <div class="form-gmail-username justify-content-between">
+                                <p class="form-title">Gmail</p>
+                                <input id="addGmail-gmail" type="text" class="global-input" placeholder="email"
+                                    maxlength="50">
+                            </div>
+                            <div class="form-gmail-password justify-content-between">
+                                <p></p>
+                                <input id="addGmail-password" type="text" class="global-input" placeholder="password">
+                            </div>
+                            <div class="form-proxy justify-content-between">
+                                <p class="form-title" data-proxy-list>Proxy list</p>
+                                <select class="global-input proxyList" id="addGmail-proxy"></select>
+                            </div>
+                            <div class="form-specific-proxy justify-content-between">
+                                <p class="form-title" data-add-specific-proxy>Add a specific proxy</p>
+                                <input id="addGmail-speProxy" type="text" class="global-input"
+                                    placeholder="ip:port:user:pass" maxlength="70">
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button id="addGmailAccount" class="global-button" data-dismiss="modal">Add
+                                    Gmail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalCaptchaEditGmail" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title">Edit Gmail</p>
+                        <div class="modal-form">
+                            <div class="form-gmail-username justify-content-between">
+                                <p class="form-title">Gmail</p>
+                                <input id="editGmail-gmailUser" type="text" class="global-input"
+                                    placeholder="primeSolutions@gmail.com" disabled>
+                            </div>
+                            <div class="form-gmail-password justify-content-between">
+                                <p></p>
+                                <input id="editGmail-gmailPassword" type="text" class="global-input"
+                                    placeholder="password" maxlength="100">
+                            </div>
+                            <div class="form-specific-proxy justify-content-between">
+                                <p class="form-title" data-proxy>Proxy</p>
+                                <div id="editGmailProxyDiv">
+                                    <i class="fas fa-sync-alt" id="editGmailRefreshProxy"></i>
+                                    <input id="editGmail-proxy" type="text" class="global-input" maxlength="70">
+                                </div>
+                            </div>
+                            <div class="form-button justify-content-between">
+                                <button id="editGmailButton" class="global-button createTaskBtn" data-tasktype="captcha"
+                                    data-dismiss="modal">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--Supreme Signup-->
+        <!--Create Task-->
+        <div id="modalSupremeSignupTaskCreation" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <p class="modal-title" data-tasks-creation>Create Task(s)</p>
+                        <div class="modal-form">
+                            <div class="form-store form justify-content-between">
+                                <p class="form-title" data-store-location>Store location</p>
+                                <select class="global-input" id="addSupremeTask-storeLocation">
+                                    <option value="brooklyn">Brooklyn</option>
+                                    <option value="manhattan">Manhattan</option>
+                                    <option value="london">London</option>
+                                    <option value="la">Los Angeles</option>
+                                    <option value="paris">Paris</option>
+                                    <option value="sf">San Francisco</option>
+                                </select>
+                            </div>
+                            <div class="form-profile form justify-content-between">
+                                <p class="form-title" data-profile>Profile</p>
+                                <select class="global-input global-profile-select" id="addSupremeTask-profile">
+                                </select>
+                            </div>
+
+                            <div class="form-gmail form justify-content-between">
+                                <p class="form-title">Gmail</p>
+                                <select class="global-input" id="addSupremeTask-gmail"></select>
+                            </div>
+                            <div class="form-proxy form justify-content-between">
+                                <p class="form-title" data-proxy-list>Proxy list</p>
+                                <select class="global-input proxyList" id="addSupremeTask-proxy"></select>
+                            </div>
+                            <div class="form-specific-proxy form justify-content-between">
+                                <p class="form-title" data-add-specific-proxy>Add a specific proxy</p>
+                                <input id="addSupremeTask-speProxy" type="text" class="global-input"
+                                    placeholder="ip:port:user:pass" maxlength="70">
+                            </div>
+                            <div class="form-task-quantity form justify-content-between">
+                                <p class="form-title" data-tasks-quantity>Task(s) quantity</p>
+                                <input id="addSupremeTask-qty" type="number" class="global-input" value="1" min="1"
+                                    max="50">
+                            </div>
+                            <div class="form-button form justify-content-between">
+                                <button id="createSupremeSignupTask" class="global-button createTaskBtn green"
+                                    data-tasktype="captcha" data-task-create data-dismiss="modal">Create
+                                    Task</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Loader -->
+        <div class="loader-wrapper">
+            <div class="user-loader">
+                <img src="../assets/img/logo.png" class="avatar-img" />
+                <p><span data-welcome>Welcome</span> <span class="user-name"></span></p>
+            </div>
+            <div class="loader">
+                <img src="../assets/img/logo.gif">
+            </div>
+            <p>Loading ...</p>
+        </div>
+        <!--Toast notifications-->
+        <div id="toast" style="display: none;"></div>
+
+        <!-- Optional JavaScript -->
+        <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+        </script>
+        <script src="../assets/js/misc/tippy.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+        </script>
+
+        <!-- Loading animation -->
+        <script>
+            document.addEventListener('DOMContentLoaded', () => setTimeout(() => $('.loader-wrapper').fadeOut(
+                    'slow'),
+                isDev ? 0 : 4300))
+        </script>
+        <!--electron events and page events-->
+        <script src="../assets/js/misc/appPageEvent.js" defer></script>
+        <!--Tools scripts integration-->
+        <script src="../assets/js/tools/captcha.js" defer></script>
+        <script src="../assets/js/tools/discordtools.js" defer></script>
+        <script src="../assets/js/misc/language.js" defer></script>
+        <script src="../assets/js/tools/browser-spoofer.js" defer></script>
+        <script src="../assets/js/tools/proxies-part.js" defer></script>
+        <script src="../assets/js/tools/profile-manager.js" defer></script>
+        <script src="../assets/js/tools/accgen.js" defer></script>
+        <script src="../assets/js/tools/supreme-signup.js" defer></script>
+</body>
+
+</html>

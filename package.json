@@ -1,0 +1,50 @@
+{
+  "name": "PrimeSolutions",
+  "version": "1.0.4",
+  "description": "PrimeSolutions Toolbox",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-packager . \"Prime Solutions\" --platform=darwin --arch=x64 --version=0.35.6 --app-bundle-id=\"com.primesolutions.app\" --app-version=\"0.0.1\" --build-version=\"1.0.100\" --osx-sign && electron-builder -p always",
+    "dist-win": "electron-builder -p always",
+    "build": "electron-builder -p never"
+  },
+  "keywords": [],
+  "author": "VGontier-cmd / gontiervivien@gmail.com",
+  "license": "MIT",
+  "dependencies": {
+    "@cliqz/adblocker-puppeteer": "^1.16.0",
+    "axios": "^0.19.2",
+    "bytenode": "^1.1.6",
+    "cheerio": "^1.0.0-rc.3",
+    "country-code-lookup": "0.0.17",
+    "crypto-js": "^4.0.0",
+    "csv-parser": "^2.3.3",
+    "discord-rich-presence": "0.0.8",
+    "discord.js": "^11.6.4",
+    "electron-is-dev": "^1.1.0",
+    "electron-store": "^6.0.0",
+    "electron-unhandled": "^3.0.2",
+    "electron-updater": "^4.3.1",
+    "google-trends-api": "^4.9.0",
+    "jquery": "^3.5.0",
+    "json-2-csv": "^3.7.6",
+    "moment": "^2.27.0",
+    "node-machine-id": "^1.1.12",
+    "puppeteer": "^5.5.0",
+    "puppeteer-extra": "^3.1.15",
+    "puppeteer-extra-plugin-adblocker": "^2.11.9",
+    "puppeteer-extra-plugin-stealth": "^2.6.5",
+    "request": "^2.88.2",
+    "request-promise": "^4.2.5",
+    "shell": "^0.5.0",
+    "uuid": "^8.1.0",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "devDependencies": {
+    "electron": "^8.4.1",
+    "electron-builder": "^22.8.0",
+    "electron-packager": "^15.0.0",
+    "less": "^3.11.1"
+  }
+}

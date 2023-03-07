@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/15955bed4a.js"></script>
+    <script src="https://www.google.com/recaptcha/api.js?hl=en" async defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Spartan&display=swap" rel="stylesheet">
+    <style>
+        * {
+            color: white;
+            font-family: 'Spartan', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            user-select: none;
+        }
+
+        #bar {
+            width: 100%;
+            height: 35px;
+            background-color:#1c1f2c;
+            top: 0;
+            -webkit-app-region: drag;
+            display: grid;
+            grid-template-columns: 2fr auto;
+        }
+
+        #bar div {
+            display: flex;
+            align-items: center;
+            margin: 0 5px;
+        }
+
+        #bar i {
+            -webkit-app-region: no-drag;
+            font-size: 15px;
+            color: white;
+            margin: 0 5px;
+        }
+
+        #bar i:hover {
+            cursor: pointer;
+        }
+
+        .circle {
+            margin: 0 5px;
+            -webkit-app-region: no-drag;
+            transition-duration: 0.2s;
+            position: relative;
+            border-radius: 50%;
+            width: 12px;
+            height: 12px;
+        }
+
+        .circle:hover {
+            transition-duration: 0.2s;
+            box-shadow: 0px 0px 12px rgb(255, 255, 255);
+        }
+
+        .close {
+            background-color: rgb(255, 5, 5);
+        }
+
+        .minimize {
+            background-color: rgb(255, 208, 0);
+        }
+
+        #center { text-align:  center; }
+        .g-recaptcha { display: inline-block; }
+
+        button {
+            background-color: #327ec5;
+            padding: 1px 15px;
+            border: none;
+            border-radius: 7px;
+            color: white;
+            height: 22px;
+            transition-duration: .5s;
+            display: block;
+            margin: 10px auto;
+        }
+
+        button:hover {
+            cursor: pointer;
+            transform: scale(1.05)
+        }
+
+        button:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="bar">
+        <div>
+            <div class="circle close"></div>
+            <div class="circle minimize"></div>
+        </div>
+    </div>
+    <div id="center">
+        <div class="g-recaptcha" data-sitekey="6LeoeSkTAAAAAA9rkZs5oS82l69OEYjKRZAiKdaF" data-theme="dark" data-callback="sub"></div>
+    </div>
+    <button id="openYoutube">YouTube</button>
+    <script>
+        const { remote, ipcRenderer, remote: { BrowserWindow }} = require('electron');
+
+        const captchaQueue = [];
+        let currentlySolving = false;
+
+        window.sub = () => {
+            ipcRenderer.send('receiveCaptcha', captchaQueue[0], grecaptcha.getResponse())
+            captchaQueue.splice(0, 1);
+            grecaptcha.reset()
+
+            console.log(captchaQueue)
+
+            if (captchaQueue.length) {
+                autoClickCaptcha()
+                currentlySolving = true;
+            } else {
+                currentlySolving = false;
+            }
+        };
+
+        ipcRenderer.on('removeFromQueue', (e, taskID) => {
+            const index = captchaQueue.findIndex(id => id == taskID);
+            if (index == -1) return;
+            captchaQueue.splice(index, 1);
+
+            if(!captchaQueue.length) { grecaptcha.reset(); currentlySolving = false; }
+        });
+
+        ipcRenderer.on('getCaptcha', (e, taskID) => {
+            console.log(taskID)
+            captchaQueue.push(taskID);
+
+            if (!currentlySolving) {
+                autoClickCaptcha()
+                currentlySolving = true;
+            }
+        })
+
+        document.querySelector('.close').addEventListener('click', () => remote.getCurrentWindow().close());
+
+        document.querySelector('.minimize').addEventListener('click', () => remote.getCurrentWindow().minimize());
+
+        document.querySelector('#openYoutube').addEventListener('click', () => ipcRenderer.send('openYoutube'))
+
+        function autoClickCaptcha() {
+            try {
+                let iframe = document.querySelector('iframe').contentWindow.document;
+                let dimensions = iframe.querySelector('.rc-anchor.rc-anchor-normal.rc-anchor-dark').getBoundingClientRect();
+                let xInFrame = Math.floor(Math.random() * dimensions.width);
+                let yInFrame = Math.floor(Math.random() * dimensions.height);
+                let xInCheck = Math.floor(Math.random() * 38);
+                let yInCheck = Math.floor(Math.random() * 30);
+                const xOutside = 190 + Math.floor(Math.random() * 100);
+                const yOutside = 310 + Math.floor(Math.random() * 100);
+                let simLab = iframe.querySelector('.rc-anchor.rc-anchor-normal.rc-anchor-dark');
+                for (let i = 0; i < 7; i++) {
+                    simulateClick(simLab, {
+                        type: 'mousemove',
+                        clientX: xInFrame + (8 - Math.floor(Math.random() * 4)),
+                        clientY: yInFrame + (8 - Math.floor(Math.random() * 4)),
+                        screenX: xOutside + (8 - Math.floor(Math.random() * 4)),
+                        screenY: yOutside + (8 - Math.floor(Math.random() * 4)),
+                        detail: 0
+                    });
+                }
+                let arr = ['mousedown', 'mouseup', 'click'];
+                for (let entry of arr) {
+                    simulateClick(iframe.querySelector('.recaptcha-checkbox-checkmark'), {
+                        type: entry,
+                        clientX: xInCheck,
+                        clientY: yInCheck,
+                        screenX: xOutside,
+                        screenY: yOutside
+                    })
+				}
+				startTime = new Date();
+            } catch (e) {
+                console.log('encountered error', e.message)
+                setTimeout(autoClickCaptcha, 100);
+            }
+        }
+
+		function simulateClick(target, options) {
+
+			var event = target.ownerDocument.createEvent('MouseEvents'),
+			options = options || {},
+			opts = {
+				type: 'click',
+				canBubble: true,
+				cancelable: true,
+				view: target.ownerDocument.defaultView,
+				detail: 1,
+				screenX: 0,
+				screenY: 0,
+				clientX: 0,
+				clientY: 0,
+				ctrlKey: false,
+				altKey: false,
+				shiftKey: false,
+				metaKey: false,
+				button: 0,
+				relatedTarget: null,
+			};
+
+			for (var key in options) {
+				if (options.hasOwnProperty(key)) {
+					opts[key] = options[key];
+				}
+			}
+
+			event.initMouseEvent(
+				opts.type,
+				opts.canBubble,
+				opts.cancelable,
+				opts.view,
+				opts.detail,
+				opts.screenX,
+				opts.screenY,
+				opts.clientX,
+				opts.clientY,
+				opts.ctrlKey,
+				opts.altKey,
+				opts.shiftKey,
+				opts.metaKey,
+				opts.button,
+				opts.relatedTarget
+			);
+
+			target.dispatchEvent(event);
+        }
+    </script>
+</body>
+</html>

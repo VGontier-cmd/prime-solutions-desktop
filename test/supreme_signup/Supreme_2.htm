@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Supreme</title>
+    <meta name="csrf-param" content="authenticity_token" />
+<meta name="csrf-token" content="a9/OPvl+HVtjnMLcM8G5EjG5jChvrIT7Qea0tieK/QYgG7iGLWJCkO+/ybo40gINdXUzwD2xSR6YEjFrMuNQDw==" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" media="all" href="https://d17ol771963kd3.cloudfront.net/274/application-aeca728d2ef16c2d7830f1239b3f30b5a161d11096844f8b959e9531ae24bf4d.css" data-turbolinks-track="reload" />
+    <script src="https://d17ol771963kd3.cloudfront.net/274/application-9bda8644cd4639fe18ad0a4c0af9d947cd0e9476ce99a11213782c5406995bb1.js" data-turbolinks-track="reload"></script>
+
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-108665319-3"></script>
+    <script>
+     window.dataLayer = window.dataLayer || [];
+     function gtag(){dataLayer.push(arguments);}
+     gtag('js', new Date());
+
+     gtag('config', 'UA-108665319-3');
+
+    </script>
+
+  </head>
+
+
+  <body>
+      <div class="container-fluid">
+        <div id="header" class="row justify-content-center">
+          <div class="col col-lg-4 flex-xs-middle align-self-center">
+            <div>
+              <p id="head_bit">
+              <time id="date" data-timezone-offset="7200">
+                <b>10/13/2020 05:02:44am</b>
+                
+                
+                 <span id="time-zone-name">PARIS</span>
+              </time>
+                <a data-turbolinks="false" href="/">
+                  <img id="signup_logo" src="https://d17ol771963kd3.cloudfront.net/274/logo@2x-ad9deb8b3e176c7111dfd22958bd72630fa42acb2c84b420ba509dc9cd6bd406.png" alt="Logo@2x" />
+</a>              </p>
+            </div>
+          </div>
+        </div>
+        <div id="cnt">
+          <script src="https://www.google.com/recaptcha/api.js">async defer</script><div class="row justify-content-center" id="closed"><div class="col col-lg-4 flex-xs-middle align-self-center"><br /><br class="no-mobile" /><p class="copy">L&#39;enregistrement pour cette sortie de produits est terminé</p><form id="signup_form" action="/mailinglist_signup" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /><input type="hidden" name="authenticity_token" value="qNN7r0VwBLxS1HhuIK61WNpATboSSlJcTv5ue11v9qArh3fjSHFskrmgI/zSbe8knr7U0VQaXzvKH9jQloaT7Q==" /><p class="copy" id="sign_up">En entrant mon e mail et en cliquant sur &quot;Inscription&quot;, j&#39;accepte de recevoir des e mails au sujet des prochaines sorties de produits et je comprends qu&#39;il m&#39;est possible de me désinscrire à tout moment:</p><p id="lower_form"><input type="email" name="email" id="email" value="" placeholder="email" /><input type="submit" name="commit" value="S’inscrire" class="btn btn-default" id="signup_button" /><div class="g-recaptcha" data-callback="captchaIsDone" data-sitekey="6LfEPy8UAAAAAAVCidikQMCi4wIm_D-UMWSSJKHq" data-size="invisible"></div></p></form></div></div><script>function captchaIsDone(e){
+  window.captchaDone = true;
+  var email = $('#email');
+  var captcharep = $('#g-recaptcha-response');
+  if (email.val() == "" || !email.val().match(/^([^/@\s\\]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/)) {
+    email.addClass('error');
+  } else {
+    email.removeClass('error');
+    $('#signup_button').addClass('loading');
+    $.ajax({
+      method: "POST",
+      url: "/mailinglist_signup",
+      data: {"email": email.val(), "g-recaptcha-response": captcharep.val()},
+      success: function(r){
+        $('#sign_up').text('Merci.');
+        $('#lower_form').remove();
+      }
+    })
+  }
+} 
+
+$('#signup_form').submit(function(e){
+  e.preventDefault(); 
+  if (!window.captchaDone && $('.g-recaptcha').length > 0) {
+    $('#signup_button').removeAttr('disabled');     
+    grecaptcha.execute();
+    return;
+  }
+  captchaIsDone(e);
+});</script>
+        </div>
+      </div>
+
+  </body>
+</html>

@@ -1,0 +1,7 @@
+node_modules
+test.*
+.history
+.DS_Store
+dist
+package-lock.json
+.env
